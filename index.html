@@ -1,0 +1,1728 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Anti-AI Qwen Academy | Биология ЕГЭ-2027</title>
+  <meta name="description" content="Бесплатный офлайн-тренажёр и чек-лист для подготовки к ЕГЭ по биологии 2027: 28 заданий, 57 первичных баллов, 235 минут, демо ФИПИ." />
+  <link rel="icon" href="favicon.ico" type="image/x-icon" />
+  <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
+  <style>
+    * { box-sizing: border-box; }
+    :root {
+      --bg: #070b18;
+      --card: rgba(18, 26, 51, 0.72);
+      --card-soft: rgba(255, 255, 255, 0.05);
+      --border: rgba(255, 255, 255, 0.1);
+      --text: #e8ecff;
+      --muted: #9aa4c8;
+      --accent: #22d3ee;
+      --violet: #7c3aed;
+      --green: #22c55e;
+      --red: #ef4444;
+      --orange: #f59e0b;
+    }
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+      background:
+        radial-gradient(circle at top left, rgba(124, 58, 237, 0.22), transparent 30%),
+        radial-gradient(circle at top right, rgba(34, 211, 238, 0.18), transparent 28%),
+        var(--bg);
+      color: var(--text);
+      line-height: 1.55;
+      min-height: 100vh;
+    }
+    .container { width: min(1120px, 92%); margin: 0 auto; }
+    header {
+      position: sticky; top: 0; z-index: 50;
+      backdrop-filter: blur(14px);
+      background: rgba(7, 11, 24, 0.82);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .topbar {
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 16px; padding: 14px 0; flex-wrap: wrap;
+    }
+    .brand { display: flex; align-items: center; gap: 12px; }
+    .brand-logo {
+      width: 46px; height: 46px; border-radius: 15px; object-fit: cover;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      box-shadow: 0 12px 30px rgba(34, 211, 238, 0.18);
+      flex: 0 0 auto;
+    }
+    .brand strong { display: block; font-size: 16px; line-height: 1.2; }
+    .brand small { color: var(--muted); font-size: 12px; }
+    nav { display: flex; gap: 18px; flex-wrap: wrap; }
+    nav a { color: #cfd6ff; text-decoration: none; font-weight: 700; font-size: 14px; }
+    nav a:hover { color: white; }
+    .top-controls { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-left: auto; }
+
+    .lang-btn {
+      display: inline-flex; align-items: center; gap: 6px;
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      background: rgba(255, 255, 255, 0.08);
+      color: var(--muted); border-radius: 999px; padding: 8px 12px;
+      font-weight: 850; cursor: pointer; transition: 0.15s ease;
+      font-size: 13px;
+    }
+    .lang-btn:hover { background: rgba(255, 255, 255, 0.12); }
+    .lang-option { opacity: 0.65; }
+    .lang-option.active { opacity: 1; color: white; }
+    .lang-sep { opacity: 0.45; }
+
+    .timer-widget {
+      display: flex; align-items: center; gap: 6px;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 14px; padding: 6px 8px;
+    }
+    .timer-widget select {
+      background: rgba(7, 11, 24, 0.55); color: var(--text);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      border-radius: 10px; padding: 6px 8px; font: inherit;
+      font-size: 12px; max-width: 190px;
+    }
+    #timerDisplay {
+      font-variant-numeric: tabular-nums; font-weight: 900;
+      min-width: 88px; text-align: center; color: white;
+    }
+    .timer-btn {
+      border: 0; background: rgba(255, 255, 255, 0.08); color: var(--text);
+      border-radius: 10px; padding: 6px 9px; cursor: pointer;
+      font-size: 14px; transition: 0.15s ease;
+    }
+    .timer-btn:hover { background: rgba(255, 255, 255, 0.14); }
+    .timer-widget.warning #timerDisplay { color: var(--orange); }
+    .timer-widget.danger #timerDisplay { color: var(--red); animation: pulse 1s infinite; }
+    @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.55; } }
+
+    .hero {
+      display: grid; grid-template-columns: 1.15fr 0.85fr;
+      gap: 24px; padding: 48px 0 28px; align-items: start;
+    }
+    .badge {
+      display: inline-flex; align-items: center;
+      padding: 8px 12px; border-radius: 999px;
+      background: rgba(124, 58, 237, 0.18);
+      border: 1px solid rgba(124, 58, 237, 0.35);
+      color: #d8ccff; font-size: 13px; font-weight: 700;
+    }
+    h1 { font-size: clamp(34px, 5vw, 58px); line-height: 1.05; margin: 16px 0; }
+    h1 .accent { color: var(--accent); }
+    .lead { color: #b8c1e6; max-width: 72ch; font-size: 17px; }
+    .actions { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 22px; }
+    .btn {
+      border: 0; border-radius: 14px; padding: 14px 18px;
+      font-weight: 850; cursor: pointer;
+      transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+      background: linear-gradient(135deg, var(--violet), var(--accent));
+      color: white; box-shadow: 0 12px 30px rgba(34, 211, 238, 0.18);
+      font-size: 15px;
+    }
+    .btn:hover { transform: translateY(-1px); }
+    .btn.secondary {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      color: #eaf0ff; box-shadow: none;
+    }
+    .btn.small { padding: 10px 14px; font-size: 14px; border-radius: 12px; }
+    .panel {
+      background: linear-gradient(180deg, rgba(124, 58, 237, 0.16), rgba(6, 182, 212, 0.10));
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 24px; padding: 22px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+    }
+    .panel h3 { margin: 0 0 14px; font-size: 20px; }
+    .metrics { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 18px 0; }
+    .metric {
+      background: rgba(7, 11, 24, 0.35); border-radius: 16px;
+      padding: 14px; border: 1px solid rgba(255, 255, 255, 0.08);
+      min-height: 82px;
+    }
+    .metric strong { display: block; font-size: 22px; color: white; margin-bottom: 4px; }
+    .metric span { color: var(--muted); font-size: 12px; }
+    progress {
+      width: 100%; height: 10px; border-radius: 999px;
+      overflow: hidden; appearance: none;
+      background: rgba(255, 255, 255, 0.1); border: none; margin-top: 10px;
+    }
+    progress::-webkit-progress-bar { background: rgba(255, 255, 255, 0.1); border-radius: 999px; }
+    progress::-webkit-progress-value { background: linear-gradient(90deg, var(--violet), var(--accent)); border-radius: 999px; }
+    progress::-moz-progress-bar { background: var(--accent); border-radius: 999px; }
+    .note { color: var(--muted); font-size: 13px; margin-top: 12px; }
+
+    section { padding: 28px 0; }
+    .section-head {
+      display: flex; justify-content: space-between;
+      align-items: end; gap: 16px; margin-bottom: 18px; flex-wrap: wrap;
+    }
+    h2 { font-size: clamp(26px, 3vw, 36px); margin: 0; line-height: 1.15; }
+    .sub { color: var(--muted); margin: 6px 0 0; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(245px, 1fr)); gap: 16px; }
+    .card {
+      background: var(--card); border: 1px solid rgba(255, 255, 255, 0.09);
+      border-radius: 22px; padding: 20px;
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.18);
+    }
+    .card h3 { margin: 0 0 10px; font-size: 20px; }
+    .card p { color: #b8c1e6; margin: 0 0 16px; }
+    .warn-card { border-color: rgba(245, 158, 11, 0.35); background: linear-gradient(180deg, rgba(245, 158, 11, 0.10), rgba(18, 26, 51, 0.72)); }
+    .danger-card { border-color: rgba(239, 68, 68, 0.35); background: linear-gradient(180deg, rgba(239, 68, 68, 0.10), rgba(18, 26, 51, 0.72)); }
+    .success-card { border-color: rgba(34, 197, 94, 0.35); background: linear-gradient(180deg, rgba(34, 197, 94, 0.10), rgba(18, 26, 51, 0.72)); }
+    .tag {
+      display: inline-block; padding: 6px 10px; border-radius: 999px;
+      font-size: 12px; font-weight: 850; margin-bottom: 10px;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      color: #dbe3ff;
+    }
+    .tag.red { background: rgba(239, 68, 68, 0.14); border-color: rgba(239, 68, 68, 0.35); color: #ffd7d7; }
+    .tag.green { background: rgba(34, 197, 94, 0.14); border-color: rgba(34, 197, 94, 0.35); color: #d7ffe6; }
+    .tag.orange { background: rgba(245, 158, 11, 0.14); border-color: rgba(245, 158, 11, 0.35); color: #fff0cc; }
+    .mini-list { margin: 0; padding-left: 18px; color: #c8d2f5; }
+    .mini-list li { margin: 7px 0; }
+
+    .question-block {
+      background: var(--card); border: 1px solid rgba(255, 255, 255, 0.09);
+      border-radius: 24px; padding: 24px; margin-bottom: 26px;
+      box-shadow: 0 18px 50px rgba(0, 0, 0, 0.22);
+    }
+    .q-number {
+      display: inline-block; padding: 6px 12px; border-radius: 999px;
+      background: rgba(124, 58, 237, 0.22);
+      border: 1px solid rgba(124, 58, 237, 0.45);
+      color: #d8ccff; font-size: 13px; font-weight: 850; margin-bottom: 14px;
+    }
+    .q-part { margin-bottom: 18px; }
+    .q-part-label {
+      display: inline-block; font-size: 12px; font-weight: 900;
+      text-transform: uppercase; letter-spacing: 0.5px;
+      color: var(--accent); margin-bottom: 8px;
+    }
+    .q-text {
+      font-size: 17px; font-weight: 700; margin: 0;
+      line-height: 1.5; color: #eaf0ff; white-space: pre-wrap;
+    }
+    .q-info {
+      background: rgba(124, 58, 237, 0.10);
+      border-left: 4px solid var(--violet);
+      border-radius: 0 14px 14px 0;
+      padding: 16px 18px; margin: 18px 0;
+      color: #dbe3ff; font-size: 15px; line-height: 1.55; white-space: pre-wrap;
+    }
+    .q-info strong { color: #ffffff; }
+    .q-trainer-label {
+      display: inline-block; font-size: 12px; font-weight: 900;
+      text-transform: uppercase; letter-spacing: 0.5px;
+      color: var(--accent); margin-bottom: 10px;
+    }
+    .answer-row { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+    .answer-input {
+      flex: 1; min-width: 220px;
+      background: rgba(7, 11, 24, 0.45);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      color: var(--text); border-radius: 14px;
+      padding: 14px 16px; font: inherit; font-size: 16px;
+    }
+    .answer-input:focus {
+      outline: none; border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(34, 211, 238, 0.15);
+    }
+    .answer-input.correct { border-color: rgba(34, 197, 94, 0.65); background: rgba(34, 197, 94, 0.12); }
+    .answer-input.wrong { border-color: rgba(239, 68, 68, 0.65); background: rgba(239, 68, 68, 0.12); }
+    .answer-input.partial { border-color: rgba(245, 158, 11, 0.65); background: rgba(245, 158, 11, 0.12); }
+    .result-block { margin-top: 14px; padding: 14px 16px; border-radius: 14px; }
+    .result-block.correct { background: rgba(34, 197, 94, 0.12); border: 1px solid rgba(34, 197, 94, 0.35); }
+    .result-block.wrong { background: rgba(239, 68, 68, 0.12); border: 1px solid rgba(239, 68, 68, 0.35); }
+    .result-block.partial { background: rgba(245, 158, 11, 0.12); border: 1px solid rgba(245, 158, 11, 0.35); }
+    .result-block.neutral { background: rgba(34, 211, 238, 0.12); border: 1px solid rgba(34, 211, 238, 0.35); }
+    .verdict { font-size: 17px; font-weight: 900; margin-bottom: 8px; }
+    .verdict.correct { color: #22c55e; }
+    .verdict.wrong { color: #ef4444; }
+    .verdict.partial { color: var(--orange); }
+    .verdict.neutral { color: var(--accent); }
+    .result-row { margin: 6px 0; color: #d7e6ff; font-size: 15px; white-space: pre-wrap; }
+    .result-row strong { color: #ffffff; }
+    .source-row {
+      margin-top: 10px; padding-top: 10px;
+      border-top: 1px dashed rgba(255, 255, 255, 0.18);
+      color: var(--muted); font-size: 13px;
+      white-space: pre-wrap;
+    }
+    .source-row strong { color: #dbe3ff; }
+    .summary {
+      background: linear-gradient(180deg, rgba(34, 197, 94, 0.14), rgba(18, 26, 51, 0.72));
+      border: 1px solid rgba(34, 197, 94, 0.4);
+      border-radius: 24px; padding: 24px; text-align: center; margin-top: 24px;
+    }
+    .summary .score { font-size: 48px; font-weight: 950; color: #fff; }
+    .reset-bar { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 20px; justify-content: flex-end; }
+
+    .checklist { list-style: none; padding: 0; margin: 0; display: grid; gap: 10px; }
+    .check-item {
+      display: flex; gap: 12px; align-items: flex-start;
+      background: var(--card-soft); border: 1px solid var(--border);
+      border-radius: 16px; padding: 14px; transition: 0.15s ease;
+    }
+    .check-item input { width: 20px; height: 20px; margin-top: 3px; accent-color: var(--accent); flex: 0 0 auto; }
+    .check-item label { cursor: pointer; color: #dbe3ff; }
+    .check-item.done { opacity: 0.72; background: rgba(34, 211, 238, 0.08); border-color: rgba(34, 211, 238, 0.25); }
+    .check-item.done label { text-decoration: line-through; color: #aab5dc; }
+
+    .plan-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; }
+    .day {
+      background: var(--card-soft); border: 1px solid var(--border);
+      border-radius: 18px; padding: 16px; min-height: 112px;
+    }
+    .day b { display: block; color: var(--accent); margin-bottom: 6px; font-size: 14px; letter-spacing: 0.2px; }
+    .day.critical { border-color: rgba(239, 68, 68, 0.35); background: rgba(239, 68, 68, 0.08); }
+
+    .support-card {
+      background: linear-gradient(180deg, rgba(124, 58, 237, 0.18), rgba(34, 211, 238, 0.10));
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      border-radius: 24px; padding: 24px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+    }
+    .support-card h2 { margin-bottom: 10px; }
+    .support-card p { margin: 10px 0; color: #dbe3ff; }
+    .phone { color: white; font-weight: 900; text-decoration: none; border-bottom: 1px dashed rgba(255, 255, 255, 0.45); }
+    .phone:hover { color: var(--accent); }
+    .copy-status { margin-left: 8px; color: var(--green); font-weight: 850; }
+    .support-card a { color: var(--accent); font-weight: 800; text-decoration: none; }
+    .support-card a:hover { text-decoration: underline; }
+
+    footer {
+      padding: 30px 0 50px; color: var(--muted);
+      text-align: center; border-top: 1px solid rgba(255, 255, 255, 0.08);
+      margin-top: 30px;
+    }
+
+    @media (max-width: 860px) {
+      .hero { grid-template-columns: 1fr; }
+      .metrics { grid-template-columns: 1fr; }
+      nav { gap: 12px; }
+      .top-controls { width: 100%; justify-content: space-between; }
+      .timer-widget select { max-width: 150px; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container topbar">
+      <div class="brand">
+        <img src="favicon.ico" class="brand-logo" alt="Anti-AI Qwen Academy Logo" onerror="this.style.display='none'" />
+        <div>
+          <strong data-i18n="brandTitle">Анти-ИИ Квен Академия</strong>
+          <small data-i18n="brandSub">Биология ЕГЭ-2027 · 28 заданий · 57 баллов</small>
+        </div>
+      </div>
+
+      <nav>
+        <a href="#structure" data-i18n="navStructure">Структура</a>
+        <a href="#changes" data-i18n="navChanges">Изменения 2027</a>
+        <a href="#criteria" data-i18n="navCriteria">Оценивание</a>
+        <a href="#trainer" data-i18n="navTrainer">Тренажёр</a>
+        <a href="#checklist" data-i18n="navChecklist">Чек-лист</a>
+        <a href="#plan" data-i18n="navPlan">25 дней</a>
+        <a href="#support" data-i18n="navSupport">Поддержать</a>
+      </nav>
+
+      <div class="top-controls">
+        <button id="langToggle" class="lang-btn" type="button" aria-label="Switch Language">
+          <span class="lang-option active" data-lang="ru">RU</span>
+          <span class="lang-sep">/</span>
+          <span class="lang-option" data-lang="en">EN</span>
+        </button>
+
+        <div class="timer-widget" id="timerWidget" role="group" aria-label="Exam Timer">
+          <select id="timerPreset" aria-label="Timer Preset"></select>
+          <span id="timerDisplay">03:55:00</span>
+          <button id="timerToggle" class="timer-btn" type="button">▶</button>
+          <button id="timerReset" class="timer-btn" type="button">↺</button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="hero">
+      <div>
+        <span class="badge" data-i18n="badge">Проект ФИПИ 2027 · 28 заданий · 57 первичных баллов · 235 минут</span>
+        <h1 data-i18n="h1">Поможем сдать <span class="accent">биологию</span> правильно</h1>
+        <p class="lead" data-i18n="lead"></p>
+
+        <div class="actions">
+          <button class="btn" onclick="scrollToId('trainer')" data-i18n="actionTrainer">Пройти тренажёр</button>
+          <button class="btn secondary" onclick="scrollToId('structure')" data-i18n="actionStructure">Структура экзамена</button>
+          <button class="btn secondary" onclick="scrollToId('criteria')" data-i18n="actionCriteria">Критерии части 2</button>
+        </div>
+      </div>
+
+      <aside class="panel">
+        <h3 data-i18n="quickStats">Быстрая статистика</h3>
+
+        <div class="metrics">
+          <div class="metric">
+            <strong id="answeredCount">0/28</strong>
+            <span data-i18n="metricBlocks">блоков пройдено</span>
+          </div>
+          <div class="metric">
+            <strong id="correctCount">0/28</strong>
+            <span data-i18n="metricCorrect">верных ответов</span>
+          </div>
+          <div class="metric">
+            <strong id="checklistProgress">0%</strong>
+            <span data-i18n="metricChecklist">чек-лист</span>
+          </div>
+        </div>
+
+        <progress id="overall" value="0" max="100"></progress>
+        <p class="note" data-i18n="noteReset"></p>
+      </aside>
+    </section>
+
+    <section id="structure">
+      <div class="section-head">
+        <div>
+          <h2 data-i18n="structureTitle">Структура ЕГЭ по биологии</h2>
+          <p class="sub" data-i18n="structureSub"></p>
+        </div>
+      </div>
+      <div class="grid" id="structureGrid"></div>
+    </section>
+
+    <section id="changes">
+      <div class="section-head">
+        <div>
+          <h2 data-i18n="changesTitle">Что изменилось в ЕГЭ-2027</h2>
+          <p class="sub" data-i18n="changesSub"></p>
+        </div>
+      </div>
+      <div class="grid" id="changesGrid"></div>
+    </section>
+
+    <section id="criteria">
+      <div class="section-head">
+        <div>
+          <h2 data-i18n="criteriaTitle">Система оценивания</h2>
+          <p class="sub" data-i18n="criteriaSub"></p>
+        </div>
+      </div>
+      <div class="grid" id="criteriaGrid"></div>
+    </section>
+
+    <section id="trainer">
+      <div class="section-head">
+        <div>
+          <h2 data-i18n="trainerTitle">Тренажёр: 28 заданий ЕГЭ-2027</h2>
+          <p class="sub" data-i18n="trainerSub"></p>
+        </div>
+      </div>
+
+      <p class="note" data-i18n="trainerNote"></p>
+
+      <div class="reset-bar">
+        <button class="btn secondary small" onclick="resetAll()" data-i18n="resetAll">Сбросить все ответы</button>
+      </div>
+
+      <div id="quizContainer"></div>
+      <div id="summaryBox"></div>
+    </section>
+
+    <section id="checklist">
+      <div class="section-head">
+        <div>
+          <h2 data-i18n="checklistTitle">Чек-лист подготовки к ЕГЭ-2027</h2>
+          <p class="sub" data-i18n="checklistSub"></p>
+        </div>
+      </div>
+      <ul class="checklist" id="checklistUl"></ul>
+    </section>
+
+    <section id="plan">
+      <div class="section-head">
+        <div>
+          <h2 data-i18n="planTitle">Полный курс 25 дней</h2>
+          <p class="sub" data-i18n="planSub"></p>
+        </div>
+      </div>
+      <div class="plan-grid" id="planGrid"></div>
+    </section>
+
+    <section id="support">
+      <div class="support-card">
+        <h2 data-i18n="supportTitle">🤝 ПОДДЕРЖАТЬ ПРОЕКТ 💙</h2>
+        <p data-i18n="supportP1"></p>
+        <p data-i18n="supportP2"></p>
+        <p>
+          <span data-i18n="supportPhoneLabel"></span>
+          <a class="phone" href="tel:89202275676">8-920-227-56-76</a>
+          <button class="btn small" onclick="copyPhone()" data-i18n="copyPhone">📋 Копировать номер</button>
+          <span id="copyStatus" class="copy-status" aria-live="polite"></span>
+        </p>
+        <p data-i18n="supportP3"></p>
+        <p data-i18n="supportP4"></p>
+        <p>🌟 👉 <a href="https://ancf-hue.github.io/" target="_blank" rel="noopener noreferrer" data-i18n="supportCatalog"></a>.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container" data-i18n="footer"></div>
+  </footer>
+
+  <script>
+    const TOTAL_TASKS = 28;
+    const PART1_TASKS = 21;
+    const TOTAL_MAX_PRIMARY = 57;
+
+    const WEIGHTS = {};
+    [1,3,4,5,9,13,21].forEach(n => WEIGHTS[n] = 1);
+    [2,6,7,8,10,11,12,14,15,16,17,18,19,20].forEach(n => WEIGHTS[n] = 2);
+    [22,23,24,25,27,28].forEach(n => WEIGHTS[n] = 3);
+    WEIGHTS[26] = 4;
+
+    const I18N = {
+      ru: {
+        docTitle: "Анти-ИИ Квен Академия | Биология ЕГЭ-2027",
+        metaDesc: "Бесплатный офлайн-тренажёр и чек-лист для подготовки к ЕГЭ по биологии 2027: 28 заданий, 57 первичных баллов, 235 минут, демо ФИПИ.",
+        brandTitle: "Анти-ИИ Квен Академия",
+        brandSub: "Биология ЕГЭ-2027 · 28 заданий · 57 баллов",
+        navStructure: "Структура",
+        navChanges: "Изменения 2027",
+        navCriteria: "Оценивание",
+        navTrainer: "Тренажёр",
+        navChecklist: "Чек-лист",
+        navPlan: "25 дней",
+        navSupport: "Поддержать",
+        badge: "Проект ФИПИ 2027 · 28 заданий · 57 первичных баллов · 235 минут",
+        h1: 'Поможем сдать <span class="accent">биологию</span> правильно',
+        lead: "Тренажёр составлен по проекту демоверсии, спецификации и кодификатора ЕГЭ-2027 по биологии. Работа содержит 28 заданий: 21 с кратким ответом (часть 1) и 7 с развёрнутым ответом (часть 2). Максимум — 57 первичных баллов, время — 235 минут. Разрешён непрограммируемый калькулятор.",
+        actionTrainer: "Пройти тренажёр",
+        actionStructure: "Структура экзамена",
+        actionCriteria: "Критерии части 2",
+        quickStats: "Быстрая статистика",
+        metricBlocks: "блоков пройдено",
+        metricCorrect: "верных ответов",
+        metricChecklist: "чек-лист",
+        noteReset: "Ответы и чек-лист сбрасываются при открытии страницы.",
+        structureTitle: "Структура ЕГЭ по биологии",
+        structureSub: "28 заданий: 21 с кратким ответом, 7 с развёрнутым. 57 первичных баллов, 235 минут.",
+        changesTitle: "Что изменилось в ЕГЭ-2027",
+        changesSub: "Изменения структуры и содержания КИМ отсутствуют. Уточнены баллы за отдельные задания.",
+        criteriaTitle: "Система оценивания",
+        criteriaSub: "Задания 1, 3–5, 9, 13, 21 — 1 балл. Задания 2, 6–8, 10–12, 14–20 — 2 балла. Задания 22–25, 27, 28 — 3 балла. Задание 26 — 4 балла.",
+        trainerTitle: "Тренажёр: 28 заданий ЕГЭ-2027",
+        trainerSub: "Часть 1 — введи ответ. Часть 2 — автопроверка приближённая: сверяй ответ с официальными критериями ФИПИ. Ответы части 1 сверены с демоверсией ФИПИ 2027.",
+        trainerNote: "Основано на демонстрационном варианте ФИПИ ЕГЭ-2027. Для заданий 1–21 ответ — последовательность цифр, число или слово. Для заданий 22–28 автоматическая проверка является учебной подсказкой и не заменяет экспертную проверку по критериям ФИПИ.",
+        resetAll: "Сбросить все ответы",
+        checklistTitle: "Чек-лист подготовки к ЕГЭ-2027",
+        checklistSub: "Отмечай выполненные пункты — при новом открытии страницы чек-лист сбросится.",
+        planTitle: "Полный курс 25 дней",
+        planSub: "Маршрут подготовки по структуре ЕГЭ-2027.",
+        supportTitle: "🤝 ПОДДЕРЖАТЬ ПРОЕКТ 💙",
+        supportP1: "<strong>Приложение бесплатное. Было и останется.</strong>",
+        supportP2: "Все приложения бесплатны и без рекламы. Ваша помощь помогает развитию офлайн-безопасности и образования.",
+        supportPhoneLabel: "📱 ПЕРЕВОД ПО НОМЕРУ ТЕЛЕФОНА:",
+        copyPhone: "📋 Копировать номер",
+        copied: "✓ Скопировано",
+        supportP3: "✅ Деньги придут мгновенно. Без комиссии. Безопасно.",
+        supportP4: "❤️ Спасибо за поддержку!",
+        supportCatalog: "Каталог бесплатных офлайн-приложений ANTI-AI SHIELD",
+        footer: "Анти-ИИ Квен Академия • Бесплатный HTML-проект • Биология ЕГЭ-2027 • Проект ФИПИ",
+        qLabel1: "1. Вопрос",
+        qLabel2: "2. Что проверяет задание и как думать",
+        qLabel3: "Тренажёр — введи ответ",
+        checkBtn: "Проверить",
+        enterAnswer: "Введите ответ.",
+        correct: "✅ Правильно!",
+        partial: "⚠️ Частично верно",
+        wrong: "❌ Неправильно.",
+        yourAnswer: "Твой ответ:",
+        correctAnswer: "Ориентир:",
+        pointsLabel: "Баллов:",
+        explanationLabel: "Пояснение:",
+        sourceLabel: "Источник:",
+        part2Approx: "Автопроверка части 2 приближённая. Итоговый балл сверяйте с критериями ФИПИ.",
+        passedBlocks: "Пройдено блоков:",
+        of: "из",
+        correctInPart1: "Верных ответов:",
+        primaryPart1: "Первичных баллов:",
+        totalPrimary: "Итого первичных баллов:",
+        answerAllBlocks: "Ответь на все блоки, чтобы увидеть итог.",
+        noteSelfCheck: "Для заданий 22–28 сверь ответ с критериями ФИПИ.",
+        verdictExcellent: "Отличный результат! Можно выходить на высокий балл.",
+        verdictGood: "Хорошо, но разбери ошибки и повтори темы.",
+        verdictNeed: "Нужно плотно проработать базу: цитология, генетика, анатомия, экология.",
+        confirmReset: "Сбросить все ответы и чек-лист?",
+        copyError: "Не удалось скопировать автоматически. Номер: ",
+        timerExam: "Биология ЕГЭ — 235 мин",
+        timerPractice: "Тренировка — 60 мин",
+        timerSprint: "Спринт — 30 мин",
+        timeUp: "Время вышло!"
+      },
+      en: {
+        docTitle: "Anti-AI Qwen Academy | Biology EGE-2027",
+        metaDesc: "Free offline trainer and checklist for Biology EGE-2027: 28 tasks, 57 primary points, 235 minutes, FIPI demo.",
+        brandTitle: "Anti-AI Qwen Academy",
+        brandSub: "Biology EGE-2027 · 28 tasks · 57 points",
+        navStructure: "Structure",
+        navChanges: "Changes 2027",
+        navCriteria: "Scoring",
+        navTrainer: "Trainer",
+        navChecklist: "Checklist",
+        navPlan: "25 Days",
+        navSupport: "Support",
+        badge: "FIPI Demo 2027 · 28 tasks · 57 primary points · 235 minutes",
+        h1: 'Help you pass <span class="accent">Biology EGE</span> correctly',
+        lead: "The trainer is built on the FIPI demo, specification and codifier of EGE-2027 in Biology. The paper contains 28 tasks: 21 short-answer (Part 1) and 7 extended-answer (Part 2). Maximum — 57 primary points, time — 235 minutes. Non-programmable calculator is allowed.",
+        actionTrainer: "Take the trainer",
+        actionStructure: "Exam structure",
+        actionCriteria: "Part 2 criteria",
+        quickStats: "Quick stats",
+        metricBlocks: "blocks completed",
+        metricCorrect: "correct answers",
+        metricChecklist: "checklist",
+        noteReset: "Answers and checklist reset when the page is opened.",
+        structureTitle: "Biology EGE structure",
+        structureSub: "28 tasks: 21 short-answer, 7 extended-answer. 57 primary points, 235 minutes.",
+        changesTitle: "What changed in EGE-2027",
+        changesSub: "No changes in the KIM structure. Point values for some tasks are clarified.",
+        criteriaTitle: "Scoring system",
+        criteriaSub: "Tasks 1, 3–5, 9, 13, 21 — 1 point. Tasks 2, 6–8, 10–12, 14–20 — 2 points. Tasks 22–25, 27, 28 — 3 points. Task 26 — 4 points.",
+        trainerTitle: "Trainer: 28 tasks of EGE-2027",
+        trainerSub: "Part 1 — enter the answer. Part 2 — automatic checking is approximate: compare your answer with official FIPI criteria. Part 1 answers are verified against the FIPI demo 2027.",
+        trainerNote: "Based on the FIPI demo 2027. For tasks 1–21 the answer is a number sequence, number, or word. For tasks 22–28 automatic checking is a study hint and does not replace expert grading by FIPI criteria.",
+        resetAll: "Reset all answers",
+        checklistTitle: "Preparation checklist for EGE-2027",
+        checklistSub: "Tick completed items — the checklist resets when the page is opened again.",
+        planTitle: "Full 25-day course",
+        planSub: "Preparation route according to the EGE-2027 structure.",
+        supportTitle: "🤝 SUPPORT THE PROJECT 💙",
+        supportP1: "<strong>The app is free. It was and will remain free.</strong>",
+        supportP2: "All apps are free and ad-free. Your help supports offline security and education.",
+        supportPhoneLabel: "📱 TRANSFER BY PHONE NUMBER:",
+        copyPhone: "📋 Copy number",
+        copied: "✓ Copied",
+        supportP3: "✅ Money arrives instantly. No commission. Safe.",
+        supportP4: "❤️ Thanks for your support!",
+        supportCatalog: "Catalog of free offline ANTI-AI SHIELD apps",
+        footer: "Anti-AI Qwen Academy • Free HTML Project • Biology EGE-2027 • FIPI Demo",
+        qLabel1: "1. Question",
+        qLabel2: "2. What the task checks and how to think",
+        qLabel3: "Trainer — enter your answer",
+        checkBtn: "Check",
+        enterAnswer: "Enter the answer.",
+        correct: "✅ Correct!",
+        partial: "⚠️ Partially correct",
+        wrong: "❌ Incorrect.",
+        yourAnswer: "Your answer:",
+        correctAnswer: "Reference:",
+        pointsLabel: "Points:",
+        explanationLabel: "Explanation:",
+        sourceLabel: "Source:",
+        part2Approx: "Part 2 automatic checking is approximate. Compare the final score with FIPI criteria.",
+        passedBlocks: "Blocks completed:",
+        of: "of",
+        correctInPart1: "Correct answers:",
+        primaryPart1: "Primary points:",
+        totalPrimary: "Total primary points:",
+        answerAllBlocks: "Answer all blocks to see the result.",
+        noteSelfCheck: "For tasks 22–28 check your answer against FIPI criteria.",
+        verdictExcellent: "Excellent result! You can aim for a high score.",
+        verdictGood: "Good, but review mistakes and repeat topics.",
+        verdictNeed: "You need to work through the basics: cytology, genetics, anatomy, ecology.",
+        confirmReset: "Reset all answers and checklist?",
+        copyError: "Could not copy automatically. Number: ",
+        timerExam: "Biology EGE — 235 min",
+        timerPractice: "Practice — 60 min",
+        timerSprint: "Sprint — 30 min",
+        timeUp: "Time is up!"
+      }
+    };
+
+    let currentLang = "ru";
+    function loc(key) { return (I18N[currentLang] && I18N[currentLang][key]) || ""; }
+
+    const STRUCTURE_CARDS = {
+      ru: [
+        { tag: "Всего", cls: "success-card", tagCls: "green", title: "28 заданий = 57 баллов", list: [
+          "Часть 1: 21 задание с кратким ответом — 35 баллов.",
+          "Часть 2: 7 заданий с развёрнутым ответом — 22 балла.",
+          "Базовый уровень: 14 заданий, 21 балл.",
+          "Повышенный уровень: 8 заданий, 17 баллов.",
+          "Высокий уровень: 6 заданий, 19 баллов.",
+          "Время: 235 минут (3 часа 55 минут)."
+        ]},
+        { tag: "Часть 1", cls: "warn-card", tagCls: "orange", title: "Задания 1–21", list: [
+          "6 — с множественным выбором ответов.",
+          "3 — на поиск ответа по изображению.",
+          "4 — на установление соответствия.",
+          "3 — на установление последовательности.",
+          "2 — решение биологических задач (цитология, генетика).",
+          "2 — дополнение информации в таблице.",
+          "1 — анализ графической или табличной информации."
+        ]},
+        { tag: "Часть 2", cls: "danger-card", tagCls: "red", title: "Задания 22–28", list: [
+          "Задания 22–25, 27, 28 — по 3 балла.",
+          "Задание 26 — 4 балла.",
+          "Развёрнутый ответ: объяснение, описание, обоснование.",
+          "Анализ эксперимента, выводы и прогнозы.",
+          "Решение задач по цитологии и генетике.",
+          "Работа с изображениями биологических объектов."
+        ]},
+        { tag: "Анти-ИИ", cls: "", tagCls: "", text: "ИИ часто ошибается в задачах на генетику, цитологию и анализ эксперимента. Проверяй условия, используй биологическую терминологию, обосновывай выводы. В биологии ответ без обоснования не даёт баллов." }
+      ],
+      en: [
+        { tag: "Total", cls: "success-card", tagCls: "green", title: "28 tasks = 57 points", list: [
+          "Part 1: 21 short-answer tasks — 35 points.",
+          "Part 2: 7 extended-answer tasks — 22 points.",
+          "Basic level: 14 tasks, 21 points.",
+          "Advanced level: 8 tasks, 17 points.",
+          "High level: 6 tasks, 19 points.",
+          "Time: 235 minutes."
+        ]},
+        { tag: "Part 1", cls: "warn-card", tagCls: "orange", title: "Tasks 1–21", list: [
+          "6 — multiple choice.",
+          "3 — image-based answer.",
+          "4 — matching.",
+          "3 — sequence.",
+          "2 — biology problems (cytology, genetics).",
+          "2 — table completion.",
+          "1 — graph/table analysis."
+        ]},
+        { tag: "Part 2", cls: "danger-card", tagCls: "red", title: "Tasks 22–28", list: [
+          "Tasks 22–25, 27, 28 — 3 points each.",
+          "Task 26 — 4 points.",
+          "Extended answer: explanation, description, reasoning.",
+          "Experiment analysis, conclusions, forecasts.",
+          "Cytology and genetics problems.",
+          "Work with images of biological objects."
+        ]},
+        { tag: "Anti-AI", cls: "", tagCls: "", text: "AI often fails in genetics, cytology and experiment analysis. Check conditions, use biological terminology, justify conclusions. In biology, an answer without reasoning earns no points." }
+      ]
+    };
+
+    const CHANGES_CARDS = {
+      ru: [
+        { tag: "Структура", cls: "success-card", tagCls: "green", title: "Изменений структуры нет", text: "Количество заданий (28), максимальный первичный балл (57) и время (235 минут) сохранены по сравнению с 2026 годом." },
+        { tag: "Задание 21", cls: "warn-card", tagCls: "orange", title: "Уменьшен балл", text: "Максимальный первичный балл за задание 21 уменьшен с 2 баллов до 1." },
+        { tag: "Задание 26", cls: "warn-card", tagCls: "orange", title: "Увеличен балл", text: "Максимальный первичный балл за задание 26 увеличен с 3 баллов до 4." },
+        { tag: "Разделы", cls: "success-card", tagCls: "green", title: "Содержание разделов", text: "Экзаменационная работа состоит из 7 содержательных разделов: биология как наука, клетка, организм, многообразие, человек, эволюция, экосистемы." }
+      ],
+      en: [
+        { tag: "Structure", cls: "success-card", tagCls: "green", title: "No structural changes", text: "Number of tasks (28), maximum primary score (57) and time (235 minutes) remain the same as in 2026." },
+        { tag: "Task 21", cls: "warn-card", tagCls: "orange", title: "Decreased points", text: "Maximum primary points for task 21 decreased from 2 to 1." },
+        { tag: "Task 26", cls: "warn-card", tagCls: "orange", title: "Increased points", text: "Maximum primary points for task 26 increased from 3 to 4." },
+        { tag: "Sections", cls: "success-card", tagCls: "green", title: "Content sections", text: "The paper consists of 7 content sections: biology as a science, cell, organism, diversity, human, evolution, ecosystems." }
+      ]
+    };
+
+    const CRITERIA_CARDS = {
+      ru: [
+        { tag: "1 балл", cls: "", tagCls: "", title: "Задания 1, 3, 4, 5, 9, 13, 21", list: [
+          "Ответ записан в требуемой форме.",
+          "Полностью совпадает с эталоном."
+        ]},
+        { tag: "2 балла", cls: "warn-card", tagCls: "orange", title: "Задания 2, 6, 10, 14, 19, 20", list: [
+          "Каждый символ на своём месте.",
+          "Лишние символы отсутствуют.",
+          "1 балл — если на одной позиции не тот символ.",
+          "0 баллов — если символов больше, чем нужно."
+        ]},
+        { tag: "2 балла", cls: "warn-card", tagCls: "orange", title: "Задания 7, 11, 15, 17, 18", list: [
+          "Все символы присутствуют, лишних нет.",
+          "Порядок записи не важен.",
+          "1 балл — если один символ лишний или отсутствует."
+        ]},
+        { tag: "2 балла", cls: "warn-card", tagCls: "orange", title: "Задания 8, 12, 16", list: [
+          "Последовательность символов точная.",
+          "1 балл — если не более двух позиций неверны.",
+          "Если символов больше, балл уменьшается на 1, но не ниже 0."
+        ]},
+        { tag: "Часть 2", cls: "success-card", tagCls: "green", title: "Задания 22–28", list: [
+          "Задания 22–25, 27, 28 — по 3 балла.",
+          "Задание 26 — 4 балла.",
+          "Проверяются экспертами по критериям ФИПИ.",
+          "Важна полнота, обоснованность, биологическая терминология."
+        ]},
+        { tag: "Третий эксперт", cls: "danger-card", tagCls: "red", title: "Существенные расхождения", text: "Расхождение в 2 и более балла за задание 22–28 или 4 и более балла за всю часть 2 — назначается третья проверка." }
+      ],
+      en: [
+        { tag: "1 point", cls: "", tagCls: "", title: "Tasks 1, 3, 4, 5, 9, 13, 21", list: [
+          "Answer in the required form.",
+          "Fully matches the key."
+        ]},
+        { tag: "2 points", cls: "warn-card", tagCls: "orange", title: "Tasks 2, 6, 10, 14, 19, 20", list: [
+          "Each character in its place.",
+          "No extra characters.",
+          "1 point — if one position is wrong.",
+          "0 points — if more characters than required."
+        ]},
+        { tag: "2 points", cls: "warn-card", tagCls: "orange", title: "Tasks 7, 11, 15, 17, 18", list: [
+          "All characters present, no extras.",
+          "Order does not matter.",
+          "1 point — if one character is extra or missing."
+        ]},
+        { tag: "2 points", cls: "warn-card", tagCls: "orange", title: "Tasks 8, 12, 16", list: [
+          "Exact sequence.",
+          "1 point — if no more than two positions are wrong.",
+          "If there are extra characters, the score is reduced by 1, but not below 0."
+        ]},
+        { tag: "Part 2", cls: "success-card", tagCls: "green", title: "Tasks 22–28", list: [
+          "Tasks 22–25, 27, 28 — 3 points each.",
+          "Task 26 — 4 points.",
+          "Checked by experts according to FIPI criteria.",
+          "Completeness, reasoning, biological terminology matter."
+        ]},
+        { tag: "Third expert", cls: "danger-card", tagCls: "red", title: "Substantial discrepancies", text: "A 2-point or larger discrepancy on any task 22–28 or 4-point or larger on Part 2 triggers a third check." }
+      ]
+    };
+
+    const QUIZ = [
+      { n: 1, scoringType: "word", accepted: ["наблюдение", "описание"], answer: "наблюдение; описание",
+        ru: { text: "Рассмотрите таблицу «Методы биологических исследований». Запишите в ответе пропущенный термин, обозначенный в таблице вопросительным знаком.\n\nМетод: Мутагенез — создание ГМО.\n? — изучение поведения шимпанзе в естественных условиях обитания.", info: "Метод, при котором изучают поведение животных в природе без вмешательства, — это наблюдение. Также допускается ответ «описание».", explanation: "Правильный ответ: наблюдение или описание.", source: "ФИПИ ЕГЭ-2027, демо, задание 1." },
+        en: { text: "Fill in the missing term in the table 'Methods of biological research'.", info: "Studying animal behaviour in nature without intervention is observation.", explanation: "Correct answer: observation.", source: "FIPI EGE-2027, demo, task 1." } },
+
+      { n: 2, scoringType: "strict", accepted: ["12"], answer: "12",
+        ru: { text: "Испытуемый пробежал дистанцию 1000 метров в быстром темпе. Как к концу забега изменились:\nА) объём крови в сосудах скелетных мышц нижних конечностей;\nБ) объём крови в сосудах стенки желудка?\n\n1) увеличилась, 2) уменьшилась, 3) не изменилась.", info: "При физической нагрузке кровь перераспределяется к работающим мышцам и оттекает от органов пищеварения. А — 1, Б — 2.", explanation: "Правильный ответ: 12.", source: "ФИПИ ЕГЭ-2027, демо, задание 2." },
+        en: { text: "After running 1000 m: how did blood volume in leg muscles and in the stomach wall change?", info: "A — 1, B — 2.", explanation: "Correct answer: 12.", source: "FIPI EGE-2027, demo, task 2." } },
+
+      { n: 3, scoringType: "word", accepted: ["75"], answer: "75",
+        ru: { text: "Фрагмент белка содержит 25 аминокислотных остатков. Сколько нуклеотидов содержит участок иРНК, на котором происходит синтез этого фрагмента белка?", info: "Одна аминокислота кодируется триплетом из 3 нуклеотидов. 25 × 3 = 75.", explanation: "Правильный ответ: 75.", source: "ФИПИ ЕГЭ-2027, демо, задание 3." },
+        en: { text: "A protein fragment contains 25 amino acids. How many nucleotides are in the mRNA section?", info: "1 amino acid = 3 nucleotides.", explanation: "Correct answer: 75.", source: "FIPI EGE-2027, demo, task 3." } },
+
+      { n: 4, scoringType: "word", accepted: ["31"], answer: "31",
+        ru: { text: "Какое соотношение фенотипов получится у потомков при скрещивании гетерозиготных высоких растений гороха между собой в случае полного доминирования признака?", info: "Aa × Aa → 3 высоких : 1 низкий.", explanation: "Правильный ответ: 31.", source: "ФИПИ ЕГЭ-2027, демо, задание 4 (основной вариант)." },
+        en: { text: "Phenotype ratio from Aa × Aa cross with complete dominance.", info: "3:1 → 31.", explanation: "Correct answer: 31.", source: "FIPI EGE-2027, demo, task 4 (main variant)." } },
+
+      { n: 5, scoringType: "word", accepted: ["5"], answer: "5",
+        ru: { text: "Рассмотрите рисунок клетки. Какой цифрой на рисунке обозначен аппарат Гольджи?", info: "В демоверсии ФИПИ 2027 аппарат Гольджи обозначен цифрой 5.", explanation: "Правильный ответ: 5.", source: "ФИПИ ЕГЭ-2027, демо, задание 5 (основной вариант)." },
+        en: { text: "Which number indicates the Golgi apparatus?", info: "Labelled 5 in the FIPI demo.", explanation: "Correct answer: 5.", source: "FIPI EGE-2027, demo, task 5 (main variant)." } },
+
+      { n: 6, scoringType: "strict", accepted: ["122122"], answer: "122122",
+        ru: { text: "Установите соответствие между характеристиками и структурами, обозначенными на рисунке цифрами 1 и 2 (1 — рибосома, 2 — клеточный центр):\nА) содержит молекулы РНК\nБ) образована белком тубулином\nВ) состоит из микротрубочек и центросферы\nГ) синтезирует полипептиды\nД) формирует веретено деления\nЕ) организует цитоскелет", info: "Рибосома: РНК, полипептиды. Клеточный центр: тубулин, микротрубочки, веретено, цитоскелет. А-1, Б-2, В-2, Г-1, Д-2, Е-2.", explanation: "Правильный ответ: 122122.", source: "ФИПИ ЕГЭ-2027, демо, задание 6 (основной вариант)." },
+        en: { text: "Match characteristics with structures 1 and 2.", info: "Ribosome: RNA, polypeptides. Cell centre: tubulin, microtubules.", explanation: "Correct answer: 122122.", source: "FIPI EGE-2027, demo, task 6 (main variant)." } },
+
+      { n: 7, scoringType: "set", accepted: ["136"], answer: "136",
+        ru: { text: "Выберите три верных ответа. Какие понятия можно использовать для описания строения молекулы белка?\n1) дисульфидный мостик\n2) нуклеотид\n3) аминокислота\n4) антикодон\n5) фосфодиэфирная связь\n6) глобула", info: "Для белка: дисульфидный мостик, аминокислота, глобула.", explanation: "Правильный ответ: 136.", source: "ФИПИ ЕГЭ-2027, демо, задание 7." },
+        en: { text: "Choose three concepts describing protein structure.", info: "Disulfide bridge, amino acid, globule.", explanation: "Correct answer: 136.", source: "FIPI EGE-2027, demo, task 7." } },
+
+      { n: 8, scoringType: "sequence", accepted: ["35124"], answer: "35124",
+        ru: { text: "Установите последовательность процессов интерфазы и последующего митоза:\n1) распределение хромосом по экватору клетки\n2) расхождение однохроматидных хромосом к полюсам клетки\n3) репликация ДНК\n4) деспирализация хромосом\n5) разрушение ядерной оболочки", info: "Интерфаза: 3. Профаза: 5. Метафаза: 1. Анафаза: 2. Телофаза: 4.", explanation: "Правильный ответ: 35124.", source: "ФИПИ ЕГЭ-2027, демо, задание 8." },
+        en: { text: "Arrange interphase and mitosis processes.", info: "Replication → envelope breakdown → equator → divergence → despiralisation.", explanation: "Correct answer: 35124.", source: "FIPI EGE-2027, demo, task 8." } },
+
+      { n: 9, scoringType: "word", accepted: ["4"], answer: "4",
+        ru: { text: "Под каким номером на рисунках изображено позвоночное животное с полностью хрящевым скелетом, обитающее в морях?", info: "Хрящевые рыбы (акулы, скаты). В демо обозначены цифрой 4.", explanation: "Правильный ответ: 4.", source: "ФИПИ ЕГЭ-2027, демо, задание 9." },
+        en: { text: "Which number shows a vertebrate with a fully cartilaginous skeleton?", info: "Cartilaginous fish are labelled 4.", explanation: "Correct answer: 4.", source: "FIPI EGE-2027, demo, task 9." } },
+
+      { n: 10, scoringType: "strict", accepted: ["123313"], answer: "123313",
+        ru: { text: "Установите соответствие между характеристиками и животными, изображёнными на рисунках 1, 2, 3 (1 — рыба, 2 — хвостатое земноводное, 3 — пресмыкающееся):\nА) только венозная кровь в сердце\nБ) хвостатое земноводное\nВ) наличие грудной клетки\nГ) наличие зародышевой оболочки — амниона\nД) наличие в позвоночнике только двух отделов\nЕ) размножение на суше", info: "А-1, Б-2, В-3, Г-3, Д-1, Е-3.", explanation: "Правильный ответ: 123313.", source: "ФИПИ ЕГЭ-2027, демо, задание 10." },
+        en: { text: "Match characteristics with animals 1, 2, 3.", info: "A-1, B-2, C-3, D-3, E-1, F-3.", explanation: "Correct answer: 123313.", source: "FIPI EGE-2027, demo, task 10." } },
+
+      { n: 11, scoringType: "set", accepted: ["256"], answer: "256",
+        ru: { text: "Выберите три верных ответа и запишите в таблицу цифры, под которыми они указаны.\nВыберите признаки, характерные для класса Паукообразные.\n1) три пары ходильных ног\n2) простые глаза\n3) способность к полёту\n4) гермафродиты\n5) отсутствие усиков\n6) раздельнополость", info: "Для паукообразных характерны простые глаза, отсутствие усиков и раздельнополость. Три пары ходильных ног — насекомые; способность к полёту не является обязательным признаком паукообразных; гермафродитизм для них не характерен.", explanation: "Правильный ответ: 256.", source: "ФИПИ ЕГЭ-2027, демо, задание 11 (основной вариант)." },
+        en: { text: "Choose three correct answers. Which features are characteristic of Arachnida?\n1) three pairs of walking legs\n2) simple eyes\n3) ability to fly\n4) hermaphroditism\n5) absence of antennae\n6) separate sexes", info: "Arachnids have simple eyes, no antennae, and separate sexes.", explanation: "Correct answer: 256.", source: "FIPI EGE-2027, demo, task 11 (main variant)." } },
+
+      { n: 12, scoringType: "sequence", accepted: ["421563"], answer: "421563",
+        ru: { text: "Установите последовательность систематических групп, начиная с самого высокого ранга:\n1) Двудольные\n2) Покрытосеменные\n3) Дудник лесной\n4) Эукариоты\n5) Зонтичные\n6) Дудник", info: "4 → 2 → 1 → 5 → 6 → 3.", explanation: "Правильный ответ: 421563.", source: "ФИПИ ЕГЭ-2027, демо, задание 12." },
+        en: { text: "Arrange taxonomic groups from highest to lowest.", info: "Eukaryotes → Angiosperms → Dicots → Apiaceae → Angelica → A. sylvestris.", explanation: "Correct answer: 421563.", source: "FIPI EGE-2027, demo, task 12." } },
+
+      { n: 13, scoringType: "word", accepted: ["4"], answer: "4",
+        ru: { text: "Какой цифрой на рисунке обозначен проводниковый отдел слуховой сенсорной системы?", info: "Проводниковый отдел — слуховой нерв, цифра 4.", explanation: "Правильный ответ: 4.", source: "ФИПИ ЕГЭ-2027, демо, задание 13." },
+        en: { text: "Which number indicates the conductive part of the auditory system?", info: "Auditory nerve — 4.", explanation: "Correct answer: 4.", source: "FIPI EGE-2027, demo, task 13." } },
+
+      { n: 14, scoringType: "strict", accepted: ["131233"], answer: "131233",
+        ru: { text: "Установите соответствие между характеристиками и структурами анализаторов (1 — среднее ухо, 2 — полукружные каналы, 3 — улитка):\nА) компонент среднего уха\nБ) содержит кортиев орган\nВ) усиливает и передаёт звуковые колебания\nГ) воспринимает изменения положения головы\nД) содержит круглое окно\nЕ) преобразует звуковые колебания в нервные импульсы", info: "А-1, Б-3, В-1, Г-2, Д-3, Е-3.", explanation: "Правильный ответ: 131233.", source: "ФИПИ ЕГЭ-2027, демо, задание 14." },
+        en: { text: "Match characteristics with auditory structures 1, 2, 3.", info: "A-1, B-3, C-1, D-2, E-3, F-3.", explanation: "Correct answer: 131233.", source: "FIPI EGE-2027, demo, task 14." } },
+
+      { n: 15, scoringType: "set", accepted: ["124"], answer: "124",
+        ru: { text: "Выберите три верных ответа. Какие вещества обеспечивают остановку кровотечения?\n1) фибриноген\n2) тромбин\n3) соли калия\n4) соли кальция\n5) миозин\n6) углекислый газ", info: "Фибриноген, тромбин и соли кальция.", explanation: "Правильный ответ: 124.", source: "ФИПИ ЕГЭ-2027, демо, задание 15." },
+        en: { text: "Which substances stop bleeding?", info: "Fibrinogen, thrombin, calcium salts.", explanation: "Correct answer: 124.", source: "FIPI EGE-2027, demo, task 15." } },
+
+      { n: 16, scoringType: "sequence", accepted: ["543162"], answer: "543162",
+        ru: { text: "Установите последовательность органов при транспортировке антибиотика из ягодичной мышцы:\n1) правое предсердие\n2) лёгочные капилляры\n3) нижняя полая вена\n4) венулы большого круга\n5) капилляры ягодичной мышцы\n6) лёгочная артерия", info: "5 → 4 → 3 → 1 → 6 → 2.", explanation: "Правильный ответ: 543162.", source: "ФИПИ ЕГЭ-2027, демо, задание 16." },
+        en: { text: "Arrange the path of an antibiotic from gluteal muscle.", info: "Capillaries → venules → vena cava → right atrium → pulmonary artery → pulmonary capillaries.", explanation: "Correct answer: 543162.", source: "FIPI EGE-2027, demo, task 16." } },
+
+      { n: 17, scoringType: "set", accepted: ["123"], answer: "123",
+        ru: { text: "Прочитайте текст. Выберите три предложения, в которых даны описания и примеры эндемиков.\n(1) Для каждой биогеографической области Земли характерны виды, которые исторически сформировались в этой области и не обитают на территориях других областей.\n(2) Трубкозубы, поедающие термитов и муравьёв, обитают в Африке, тогда как их экологические аналоги – муравьеды – населяют Южную Америку.\n(3) Изолированная фауна Австралии включает в себя огромное количество видов сумчатых животных, которые населяют исключительно данный материк.\n(4) Многие виды за счёт высокой выживаемости и плодовитости могут мигрировать на новые континенты и заселяют все подходящие для себя территории на земном шаре.\n(5) Ареал домового воробья протянулся от Атлантического до Тихого океана, распадаясь на множество подвидов.\n(6) Плодовая мушка дрозофила населяет все континенты, за исключением Антарктиды, и распространена в различных биотопах в пределах этих континентов.", info: "Эндемики — предложения 1, 2, 3.", explanation: "Правильный ответ: 123.", source: "ФИПИ ЕГЭ-2027, демо, задание 17." },
+        en: { text: "Choose three sentences describing endemics.", info: "Sentences 1, 2, 3.", explanation: "Correct answer: 123.", source: "FIPI EGE-2027, demo, task 17." } },
+
+      { n: 18, scoringType: "set", accepted: ["256"], answer: "256",
+        ru: { text: "Выберите три верных ответа и запишите в таблицу цифры, под которыми они указаны.\nКакие примеры иллюстрируют пищевые цепи разложения?\n1) фитопланктон – зоопланктон – рыбы – тюлень\n2) лесная подстилка – дождевой червь – ёж – лисица\n3) дуб – гусеница – мухоловка(птица) – орёл\n4) лишайники – кабарга – бурый медведь\n5) ил – пескожил – краб – осьминог – морской лев\n6) опад мангров – бактерии и грибы – членистоногие – рыба – цапля", info: "Детритные цепи: 2, 5, 6.", explanation: "Правильный ответ: 256.", source: "ФИПИ ЕГЭ-2027, демо, задание 18." },
+        en: { text: "Choose three decomposition chains.", info: "2, 5, 6.", explanation: "Correct answer: 256.", source: "FIPI EGE-2027, demo, task 18." } },
+
+      { n: 19, scoringType: "strict", accepted: ["313232"], answer: "313232",
+        ru: { text: "Установите соответствие между характеристиками и средами обитания (1 — водная, 2 — наземно-воздушная, 3 — внутриорганизменная):\nА) практически неограниченный запас пищи\nБ) высокое давление\nВ) заселение кишечными паразитами\nГ) резкие колебания температуры\nД) ограниченность жизненного пространства\nЕ) значительные колебания влажности", info: "А-3, Б-1, В-3, Г-2, Д-3, Е-2.", explanation: "Правильный ответ: 313232.", source: "ФИПИ ЕГЭ-2027, демо, задание 19." },
+        en: { text: "Match characteristics with habitats 1, 2, 3.", info: "A-3, B-1, C-3, D-2, E-3, F-2.", explanation: "Correct answer: 313232.", source: "FIPI EGE-2027, demo, task 19." } },
+
+      { n: 20, scoringType: "strict", accepted: ["763"], answer: "763",
+        ru: { text: "Рассмотрите рисунок «Конечности разных отрядов млекопитающих». Заполните таблицу.\nА) тип приспособленности\nБ) уровень эволюционных изменений\nВ) путь биологического прогресса\n\nСписок: 1) физиологическая, 2) микроэволюция, 3) идиоадаптация, 4) этологическая, 5) общая дегенерация, 6) макроэволюция, 7) морфологическая, 8) конвергенция.", info: "Тип — морфологическая (7). Уровень — макроэволюция (6). Путь — идиоадаптация (3).", explanation: "Правильный ответ: 763.", source: "ФИПИ ЕГЭ-2027, демо, задание 20." },
+        en: { text: "Complete the table about limb adaptations.", info: "7, 6, 3.", explanation: "Correct answer: 763.", source: "FIPI EGE-2027, demo, task 20." } },
+
+      { n: 21, scoringType: "word", accepted: ["13"], answer: "13",
+        ru: { text: "Проанализируйте график «Выживаемость соснового коконопряда в зависимости от совокупного влияния относительной влажности и температуры воздуха». Выберите утверждения, которые можно сформулировать на основании анализа представленных данных.\n1) При температуре 10 °С и влажности 30% выживаемость соснового коконопряда равна 25%.\n2) Сосновый коконопряд способен выживать при любых значениях влажности и температуры.\n3) При температурных значениях от 8 °С до 23 °С выживаемость соснового коконопряда меняется в зависимости от влажности воздуха.\n4) При влажности воздуха выше 60% выживают все коконопряды.\n5) Наиболее благоприятная для соснового коконопряда среда – при влажности 60% и температуре 10 °С.", info: "Верны 1 и 3.", explanation: "Правильный ответ: 13.", source: "ФИПИ ЕГЭ-2027, демо, задание 21." },
+        en: { text: "Analyse the survival graph. Choose correct statements.", info: "1 and 3.", explanation: "Correct answer: 13.", source: "FIPI EGE-2027, demo, task 21." } },
+
+      { n: 22, scoringType: "part2", accepted: [], answer: "Независимая переменная — возраст.\nЗависимые переменные — ударный объём сердца и минутный объём сердца.\nОтрицательный контроль поставить нельзя, потому что в исследовании нет экспериментального воздействия; возраст является неотъемлемой характеристикой человека.",
+        ru: { text: "Экспериментатор исследовал физиологические показатели системы кровообращения у разных возрастных групп.\nВозраст: новорождённый — УОС 2,5 мл, МОС 340 мл; 1 год — 10,2 мл и 1250 мл; 7 лет — 28,0 мл и 1800 мл; 12 лет — 41,0 мл и 2370 мл; 13–16 лет — 59,0 мл и 3150 мл.\n\nКакая переменная независимая, а какие две — зависимые? Объясните, можно ли поставить отрицательный контроль.", info: "Назовите возраст как независимую переменную, ударный и минутный объёмы — как зависимые, объясните невозможность отрицательного контроля.", explanation: "Ориентир: независимая — возраст; зависимые — ударный и минутный объёмы; отрицательный контроль нельзя (нет экспериментального воздействия).", source: "ФИПИ ЕГЭ-2027, демо, задание 22." },
+        en: { text: "Identify independent and dependent variables; can a negative control be set?", info: "Age; stroke and minute volumes; no negative control.", explanation: "Reference: age; volumes; impossible.", source: "FIPI EGE-2027, demo, task 22." } },
+
+      { n: 23, scoringType: "part2", accepted: [], answer: "ЧСС = минутный объём сердца / ударный объём сердца.\nНоворождённые: 340/2,5 ≈ 136 уд/мин.\n1 год: 1250/10,2 ≈ 123 уд/мин.\n7 лет: 1800/28 ≈ 64 уд/мин.\n12 лет: 2370/41 ≈ 58 уд/мин.\n13–16 лет: 3150/59 ≈ 53 уд/мин.\nВывод: с возрастом ЧСС снижается, потому что сердце увеличивается и ударный объём растёт.",
+        ru: { text: "Ударный объём сердца — количество крови, которое желудочек выталкивает за одно сокращение. Минутный объём сердца — количество крови, перекачиваемое сердцем за минуту.\nПредложите формулу для расчёта частоты сердечных сокращений (ЧСС). Произведите расчёты для всех возрастных групп. Сделайте вывод о том, как меняется с возрастом ЧСС. Почему?", info: "ЧСС = МОС / УОС. Значения: ≈136, 123, 64, 58, 53. С возрастом снижается из-за роста сердца.", explanation: "Ориентир: ЧСС = МОС / УОС; 136, 123, 64, 58, 53; снижается из-за увеличения размеров сердца.", source: "ФИПИ ЕГЭ-2027, демо, задание 23." },
+        en: { text: "Propose HR formula; calculate for all age groups; draw conclusion.", info: "HR = MO/SO. 136, 123, 64, 58, 53. Decreases.", explanation: "Reference: formula; 136, 123, 64, 58, 53; decreases.", source: "FIPI EGE-2027, demo, task 23." } },
+
+      { n: 24, scoringType: "part2", accepted: [], answer: "Это детритная цепь, или цепь разложения, потому что она начинается с мёртвой органики и в ней нет продуцентов.\nКрот — консумент II порядка, третий трофический уровень.\nДождевые черви улучшают структуру почвы (аэрация, сохранение влаги), уменьшают кислотность и повышают плодородие, перемещая органику в глубокие слои.",
+        ru: { text: "Рассмотрите цепь питания: мёртвая органика → дождевой червь → крот.\nКак называется цепь питания? Ответ поясните. К какой функциональной группе относится крот и какой трофический уровень он занимает? Укажите две причины улучшения свойств почвы дождевыми червями.", info: "Назовите тип цепи, поясните, определите роль крота и уровень, укажите не менее двух причин.", explanation: "Ориентир: детритная цепь; начинается с мёртвой органики; крот — консумент II, 3-й уровень; улучшение структуры и плодородия.", source: "ФИПИ ЕГЭ-2027, демо, задание 24 (основной вариант)." },
+        en: { text: "Name the chain; identify mole role; give two reasons why earthworms improve soil.", info: "Detrital chain; consumer II, 3rd trophic level; structure and fertility.", explanation: "Reference: detrital; consumer II; two reasons.", source: "FIPI EGE-2027, demo, task 24 (main variant)." } },
+
+      { n: 25, scoringType: "part2", accepted: [], answer: "У китообразных сильно развита капиллярная сеть лёгких, а вода сжимает лёгкие, поэтому току крови в лёгочном круге сопротивляется больше. Правый желудочек развит сильнее и создаёт достаточное давление для газообмена.\nПри погружении ЧСС снижается.\nАТФ образуется за счёт кислорода, запасённого миоглобином (аэробно), а также за счёт анаэробного гликолиза и молочнокислого брожения.",
+        ru: { text: "У многих китов правый желудочек развит лучше левого, а у наземных млекопитающих — наоборот. Как объяснить? При погружении у китообразных снижается потребление кислорода за счёт уменьшения кровоснабжения мышц. Как изменяется ЧСС? За счёт каких адаптаций продолжает вырабатываться АТФ?", info: "Капилляры лёгких + сжатие водой → правый желудочек. ЧСС снижается. АТФ: миоглобин + анаэробно.", explanation: "Ориентир: капилляры, сжатие водой, правый желудочек; ЧСС снижается; миоглобин, гликолиз.", source: "ФИПИ ЕГЭ-2027, демо, задание 25." },
+        en: { text: "Explain right ventricle development in whales, HR change during diving, and ATP production.", info: "Pulmonary capillaries + water compression; HR decreases; myoglobin; glycolysis.", explanation: "Reference: capillaries; HR decreases; myoglobin; glycolysis.", source: "FIPI EGE-2027, demo, task 25." } },
+
+      { n: 26, scoringType: "part2", accepted: [], answer: "Под положительным отбором — аллель M: его частота постоянно растёт.\nАллель P нейтрален.\nПосле 50-го поколения колебания из-за снижения численности популяции (бутылочное горлышко).\nНачал сильнее влиять дрейф генов.\nS = (0,85 − 0,15) / (100 × 0,5 × 0,5) = 0,028.",
+        ru: { text: "На графиках — изменение частот двух аллелей. Какой аллель находится под действием положительного естественного отбора? Поясните. Частота аллеля P после 50-го поколения резко колеблется. Влияет ли P на приспособленность? Какое событие произошло? Какой эволюционный фактор начал сильнее влиять? Рассчитайте среднюю силу отбора S для аллеля M за 100 поколений по формуле S = (p2 − p1) / ((t2 − t1) × p × (1 − p)). Ответ округлите до тысячных.", info: "M — положительный отбор; P — нейтральный; бутылочное горлышко; дрейф генов; S ≈ 0,028.", explanation: "Ориентир: M — положительный отбор; P — нейтральный; дрейф генов; S ≈ 0,028.", source: "ФИПИ ЕГЭ-2027, демо, задание 26." },
+        en: { text: "Which allele is under positive selection? Calculate S for allele M.", info: "M — positive; P — neutral; drift; S ≈ 0.028.", explanation: "Reference: M positive; P neutral; drift; S ≈ 0.028.", source: "FIPI EGE-2027, demo, task 26." } },
+
+      { n: 27, scoringType: "part2", accepted: [], answer: "тРНК: 5'-ЦГААГГУГАЦААУГУ-3'.\nАнтикодон (третий триплет с 5'-конца): 5'-УГА-3'.\nКодон иРНК: 5'-УЦА-3'.\nАминокислота: серин (Сер).",
+        ru: { text: "Фрагмент ДНК (нижняя цепь — матричная):\n5'-ЦГААГГТГАЦААТГТ-3'\n3'-ГЦТТЦЦАЦТГТТАЦА-5'\n\nУстановите нуклеотидную последовательность участка тРНК, который синтезируется на данном фрагменте, и определите аминокислоту, которую будет переносить эта тРНК, если третий триплет с 5' конца соответствует антикодону тРНК. Ответ поясните. При написании нуклеиновых кислот указывайте направление цепи.", info: "тРНК: 5'-ЦГААГГУГАЦААУГУ-3'. Антикодон 5'-УГА-3'. Кодон 5'-УЦА-3'. Аминокислота — серин.", explanation: "Ориентир: тРНК 5'-ЦГААГГУГАЦААУГУ-3'; антикодон УГА; кодон УЦА; серин.", source: "ФИПИ ЕГЭ-2027, демо, задание 27 (основной вариант)." },
+        en: { text: "Determine tRNA and amino acid.", info: "tRNA: 5'-ЦГААГГУГАЦААУГУ-3'; anticodon UGA; codon UCA; serine.", explanation: "Reference: tRNA; UGA; UCA; serine.", source: "FIPI EGE-2027, demo, task 27 (main variant)." } },
+
+      { n: 28, scoringType: "part2", accepted: [], answer: "Первый брак:\nP ♀ X^aX^a × ♂ X^aY^Ab.\nДочери: X^aX^a — норма, X^AX^a — аномалия.\nСыновья: X^aY^Ab — аномалия и перепонки, X^aY^ab — норма и перепонки.\n\nВторой брак:\n♀ X^AX^a × ♂ X^aY^a.\nДочери: X^AX^a — аномалия, X^aX^a — норма.\nСыновья: X^AY^a — аномалия, X^aY^a — норма.\n\nДа, в первом браке возможен сын X^aY^ab с нормальной кистью и перепонками (кроссоверная Y-хромосома).",
+        ru: { text: "На X- и Y-хромосомах есть псевдоаутосомные участки. Ген вызывает аномалии кисти. Аллель перепонок наследуется голандрически. Женщина с нормой вышла за мужчину с аномалией и перепонками, гомозиготная мать которого была без аномалии. Дочь с аномалией кисти вышла за мужчину без аномалий. Определите генотипы родителей и потомства. Возможно ли рождение в первом браке ребёнка с нормальной кистью и перепонками? Поясните.", info: "Составьте схемы обоих браков, учтите кроссинговер, ответьте на вопрос.", explanation: "Ориентир: P1 X^aX^a × X^aY^Ab; возможен сын X^aY^ab с нормальной кистью и перепонками.", source: "ФИПИ ЕГЭ-2027, демо, задание 28." },
+        en: { text: "Determine genotypes, phenotypes and sex of offspring; can a child with normal hand and webbed fingers be born in the first marriage?", info: "X^aX^a × X^aY^Ab; son X^aY^ab is possible.", explanation: "Reference: full scheme; X^aY^ab son.", source: "FIPI EGE-2027, demo, task 28." } }
+    ];
+
+    const CHECKLIST_ITEMS = {
+      ru: [
+        "Повторил биологию как науку, методы исследования, уровни организации жизни.",
+        "Отработал химический состав клетки: белки, углеводы, липиды, нуклеиновые кислоты, АТФ.",
+        "Повторил строение клетки: мембрана, органоиды, ядро, прокариоты и эукариоты.",
+        "Отработал обмен веществ: фотосинтез, хемосинтез, энергетический обмен, гликолиз.",
+        "Повторил матричные синтезы: репликация, транскрипция, трансляция, генетический код.",
+        "Отработал клеточный цикл, митоз, мейоз, гаметогенез.",
+        "Повторил размножение и онтогенез организмов.",
+        "Отработал генетику: законы Менделя, сцепленное наследование, взаимодействие генов.",
+        "Повторил изменчивость: модификационная, комбинативная, мутационная.",
+        "Отработал селекцию и биотехнологию: методы, достижения.",
+        "Повторил многообразие организмов: бактерии, грибы, растения, животные.",
+        "Отработал систематику и основные таксоны.",
+        "Повторил анатомию человека: системы органов, гигиена.",
+        "Отработал эволюцию: Дарвин, СТЭ, движущие силы, видообразование.",
+        "Повторил происхождение человека (антропогенез).",
+        "Отработал экологию: факторы, среды обитания, экосистемы, биосфера.",
+        "Повторил цепи питания, трофические уровни, круговорот веществ.",
+        "Отработал анализ экспериментов и графиков.",
+        "Решил минимум 10 задач по генетике.",
+        "Прошёл полный пробник на 235 минут и разобрал ошибки."
+      ],
+      en: [
+        "Reviewed biology as a science, research methods, levels of life.",
+        "Practiced chemical composition of the cell.",
+        "Reviewed cell structure: membrane, organelles, nucleus.",
+        "Practiced metabolism: photosynthesis, chemosynthesis, energy exchange.",
+        "Reviewed matrix synthesis: replication, transcription, translation.",
+        "Practiced cell cycle, mitosis, meiosis, gametogenesis.",
+        "Reviewed reproduction and ontogenesis.",
+        "Practiced genetics: Mendel's laws, linkage, gene interaction.",
+        "Reviewed variability.",
+        "Practiced selection and biotechnology.",
+        "Reviewed diversity: bacteria, fungi, plants, animals.",
+        "Practiced taxonomy.",
+        "Reviewed human anatomy and hygiene.",
+        "Practiced evolution: Darwin, STE, driving forces.",
+        "Reviewed anthropogenesis.",
+        "Practiced ecology: factors, habitats, ecosystems, biosphere.",
+        "Reviewed food chains and trophic levels.",
+        "Practiced analysis of experiments and graphs.",
+        "Solved at least 10 genetics problems.",
+        "Completed a full 235-minute mock exam."
+      ]
+    };
+
+    const PLAN_DAYS = {
+      ru: [
+        "Диагностика: пробник на 235 минут.",
+        "Биология как наука. Методы. Уровни организации.",
+        "Химический состав клетки.",
+        "Строение клетки: мембрана, органоиды.",
+        "Обмен веществ: фотосинтез, энергетический обмен.",
+        "Матричные синтезы: репликация, транскрипция, трансляция.",
+        "Клеточный цикл. Митоз. Мейоз.",
+        "Размножение и онтогенез.",
+        "Генетика: законы Менделя.",
+        "Генетика: сцепленное наследование, взаимодействие генов.",
+        "Изменчивость. Селекция. Биотехнология.",
+        "Многообразие: бактерии, грибы, растения.",
+        "Многообразие: животные.",
+        "Систематика. Основные таксоны.",
+        "Анатомия человека: опорно-двигательная, кровеносная.",
+        "Анатомия человека: дыхательная, пищеварительная, выделительная.",
+        "Анатомия человека: нервная, эндокринная, сенсорные системы.",
+        "Эволюция: Дарвин, СТЭ, движущие силы.",
+        "Видообразование. Антропогенез.",
+        "Экология: факторы, среды обитания.",
+        "Экосистемы. Цепи питания. Биосфера.",
+        "Анализ экспериментов и графиков.",
+        "Решение задач по генетике.",
+        "Пробник № 2 на время.",
+        "Финальное повторение критериев и ловушек."
+      ],
+      en: [
+        "Diagnostics: full 235-min mock exam.",
+        "Biology as a science.",
+        "Chemical composition of the cell.",
+        "Cell structure.",
+        "Metabolism.",
+        "Matrix synthesis.",
+        "Cell cycle. Mitosis. Meiosis.",
+        "Reproduction and ontogenesis.",
+        "Genetics: Mendel's laws.",
+        "Genetics: linkage, gene interaction.",
+        "Variability. Selection. Biotechnology.",
+        "Diversity: bacteria, fungi, plants.",
+        "Diversity: animals.",
+        "Taxonomy.",
+        "Human anatomy: musculoskeletal, circulatory.",
+        "Human anatomy: respiratory, digestive, excretory.",
+        "Human anatomy: nervous, endocrine, sensory.",
+        "Evolution: Darwin, STE, driving forces.",
+        "Speciation. Anthropogenesis.",
+        "Ecology: factors, habitats.",
+        "Ecosystems. Food chains. Biosphere.",
+        "Analysis of experiments and graphs.",
+        "Genetics problem solving.",
+        "Mock exam #2.",
+        "Final review."
+      ]
+    };
+
+    function normalizeText(value) {
+      return String(value)
+        .trim()
+        .toLowerCase()
+        .replace(/ё/g, "е")
+        .replace(/\s+/g, " ")
+        .replace(/[.,;:!?]+$/g, "");
+    }
+
+    function digitsOnly(value) {
+      return String(value).replace(/[^0-9]/g, "");
+    }
+
+    function isWordAccepted(accepted, raw) {
+      const norm = normalizeText(raw);
+      const digits = digitsOnly(raw);
+
+      const candidates = new Set([norm]);
+
+      norm.split(/[;,]/).forEach(function (part) {
+        const p = part.trim();
+        if (p) candidates.add(p);
+      });
+
+      const candidateDigits = [];
+      candidates.forEach(function (cand) {
+        const d = digitsOnly(cand);
+        if (d) candidateDigits.push(d);
+      });
+
+      for (const acc of accepted) {
+        const accNorm = normalizeText(acc);
+
+        if (/^\d+$/.test(accNorm)) {
+          if (digits === accNorm || candidateDigits.includes(accNorm)) {
+            return true;
+          }
+        } else {
+          for (const cand of candidates) {
+            if (cand === accNorm) return true;
+          }
+        }
+      }
+
+      return false;
+    }
+
+    function scoreStrict(expectedDigits, inputDigits) {
+      if (!inputDigits || inputDigits.length !== expectedDigits.length) return 0;
+      let diff = 0;
+      for (let i = 0; i < expectedDigits.length; i++) {
+        if (inputDigits[i] !== expectedDigits[i]) diff++;
+      }
+      if (diff === 0) return 2;
+      if (diff === 1) return 1;
+      return 0;
+    }
+
+    function multisetDiff(expected, input) {
+      const expCount = {};
+      const inpCount = {};
+      for (const ch of expected) expCount[ch] = (expCount[ch] || 0) + 1;
+      for (const ch of input) inpCount[ch] = (inpCount[ch] || 0) + 1;
+      let missing = 0;
+      let extra = 0;
+      const keys = new Set([...Object.keys(expCount), ...Object.keys(inpCount)]);
+      keys.forEach(k => {
+        const e = expCount[k] || 0;
+        const i = inpCount[k] || 0;
+        if (i < e) missing += e - i;
+        if (i > e) extra += i - e;
+      });
+      return { missing, extra };
+    }
+
+    function scoreSet(expectedDigits, inputDigits) {
+      if (!inputDigits) return 0;
+      const expLen = expectedDigits.length;
+      const inpLen = inputDigits.length;
+      const { missing, extra } = multisetDiff(expectedDigits, inputDigits);
+
+      if (inpLen === expLen) {
+        if (missing === 0 && extra === 0) return 2;
+        if (missing === 1 && extra === 1) return 1;
+        return 0;
+      }
+      if (inpLen === expLen + 1) {
+        if (missing === 0 && extra === 1) return 1;
+        return 0;
+      }
+      if (inpLen === expLen - 1) {
+        if (missing === 1 && extra === 0) return 1;
+        return 0;
+      }
+      return 0;
+    }
+
+    function scoreSequence(expectedDigits, inputDigits) {
+      if (!inputDigits) return 0;
+      const expLen = expectedDigits.length;
+      const inpLen = inputDigits.length;
+
+      if (inpLen === expLen) {
+        let diff = 0;
+        for (let i = 0; i < expLen; i++) {
+          if (inputDigits[i] !== expectedDigits[i]) diff++;
+        }
+        if (diff === 0) return 2;
+        if (diff <= 2) return 1;
+        return 0;
+      }
+
+      if (inpLen === expLen + 1) {
+        for (let i = 0; i < inpLen; i++) {
+          const candidate = inputDigits.slice(0, i) + inputDigits.slice(i + 1);
+          if (candidate === expectedDigits) return 1;
+        }
+        return 0;
+      }
+
+      return 0;
+    }
+
+    function countTrue(arr) {
+      return arr.filter(Boolean).length;
+    }
+
+    function hasAerobic(text) {
+      let idx = 0;
+      while ((idx = text.indexOf("аэробн", idx)) !== -1) {
+        if (idx === 0 || text[idx - 1] !== "н") return true;
+        idx += 6;
+      }
+      return false;
+    }
+
+    function hasSerine(text) {
+      if (/серин/.test(text)) return true;
+
+      const re = /сер/g;
+      let m;
+
+      while ((m = re.exec(text)) !== null) {
+        const prev = m.index === 0 ? "" : text[m.index - 1];
+        const next = text[m.index + 3] || "";
+
+        if (!/[а-яё]/.test(prev) && !/[а-яё]/.test(next)) {
+          return true;
+        }
+      }
+
+      return false;
+    }
+
+    const PART2_GRADERS = {
+      22: function (raw, norm) {
+        const e1 = /возраст/.test(norm);
+        const e2 = /(ударн[а-яё]*\s*объем|уос)/.test(norm);
+        const e3 = /(минутн[а-яё]*\s*объем|мос)/.test(norm);
+        const e4 = /(нельзя|невозможно|не\s*став|контроль\s*не|отсутств[а-яё]*\s*контрол)/.test(norm);
+        const e5 = /(экспериментальн[а-яё]*воздейств|неотъемлем[а-яё]*характеристик|нельзя\s*изменить\s*возраст|возраст[а-яё]*не[а-яё]*воздейств|нет[а-яё]*воздейств|не\s*подвергается[а-яё]*воздействию)/.test(norm);
+
+        const count = countTrue([e1, e2, e3, e4, e5]);
+
+        if (count === 5) return 3;
+        if (count === 4) return 2;
+        if (count >= 2) return 1;
+        return 0;
+      },
+
+      23: function (raw, norm) {
+        const hasCHSS = /чсс|частота\s*сердечн/.test(norm);
+        const hasMO = /мос|минутн[а-яё]*объем/.test(norm);
+        const hasUO = /уос|ударн[а-яё]*объем/.test(norm);
+        const hasOperation = /[:\/]|дел|отношени/.test(norm);
+
+        const e1 = hasCHSS && hasMO && hasUO && hasOperation;
+        const e2 = ["136", "123", "64", "58", "53"].every(function (x) {
+          return norm.includes(x);
+        });
+        const e3 = /снижа|уменьша|пада|становится\s*меньше/.test(norm);
+        const e4 = /размер[а-яё]*сердца|сердце[а-яё]*крупн|ударн[а-яё]*объем[а-яё]*увелич|увеличени[а-яё]*ударн[а-яё]*объем|рост[а-яё]*сердца/.test(norm);
+
+        const count = countTrue([e1, e2, e3, e4]);
+
+        if (count === 4) return 3;
+        if (count === 3) return 2;
+        if (count === 2) return 1;
+        return 0;
+      },
+
+      24: function (raw, norm) {
+        const e1 = /детритн|разложени/.test(norm);
+        const e2 = /мертв[а-яё]*органик|нет[а-яё]*продуцент|не[а-яё]*начинается[а-яё]*продуцент|начинается[а-яё]*мертв/.test(norm);
+        const e3 = /консумент/.test(norm);
+        const e4 = /третий[\s-]*[йи]?[\s-]*трофическ|3[\s-]*[йи]?[\s-]*трофическ|третий[\s-]*уровень/.test(norm);
+        const e5 = /структур[а-яё]*почв|аэрац|влаг/.test(norm);
+        const e6 = /кислотн[а-яё]*почв|уменьш[а-яё]*кислотн/.test(norm);
+        const e7 = /органическ[а-яё]*веществ[а-яё]*глубок|плодород|перемещ[а-яё]*органик/.test(norm);
+
+        const count = countTrue([e1, e2, e3, e4, e5, e6, e7]);
+
+        if (e1 && count >= 6) return 3;
+        if (e1 && count >= 4) return 2;
+        if (e1 && count >= 3) return 1;
+        if (!e1 && count >= 5) return 1;
+        return 0;
+      },
+
+      25: function (raw, norm) {
+        const e1 = /капилляр[а-яё]*легк|сопротивлени[а-яё]*току|вода[а-яё]*сжимает[а-яё]*легк|легк[а-яё]*сопротивлени/.test(norm);
+        const e2 = /прав[а-яё]*желудоч[а-яё]*давлен|прав[а-яё]*желудоч[а-яё]*развит|преодолеват[а-яё]*давлен/.test(norm);
+        const e3 = /чсс[а-яё]*снижа|частота[а-яё]*сердечн[а-яё]*снижа|уменьш[а-яё]*частот[а-яё]*сердечн/.test(norm);
+        const e4 = /миоглобин/.test(norm);
+        const e5 = hasAerobic(norm) || /кислородн[а-яё]*дыхан|расход[а-яё]*кислород/.test(norm);
+        const e6 = /анаэробн|гликолиз|молочнокисл[а-яё]*брожен/.test(norm);
+
+        const count = countTrue([e1, e2, e3, e4, e5, e6]);
+
+        if (count >= 5) return 3;
+        if (count >= 3) return 2;
+        if (count >= 2) return 1;
+        return 0;
+      },
+
+      26: function (raw, norm) {
+        const e1 = /аллель\s*[мm]|положительн[а-яё]*отбор[а-яё]*[мm]|[мm][а-яё\s]*под[а-яё\s]*действием[а-яё\s]*положительн/.test(norm);
+        const e2 = /частот[а-яё\s]*[мm][а-яё\s]*(увелич|раст|повыш)|[мm][а-яё\s]*частот[а-яё\s]*(увелич|раст)|постоянно[а-яё\s]*увеличивается/.test(norm);
+        const e3 = /аллель\s*[рp][а-яё\s]*(нейтрал|не\s*влияет|не\s*оказывает)|нейтрал[а-яё\s]*аллель\s*[рp]|не\s*влияет[а-яё\s]*приспособленност/.test(norm);
+        const e4 = /бутылочн[а-яё]*горл|снизил[а-яё]*численност|эффективн[а-яё]*численност|вымирани|доля[а-яё]*размножающ|сократил[а-яё]*популяц/.test(norm);
+        const e5 = /дрейф\s*генов|дрейф[а-яё\s]*ген|генетическ[а-яё]*дрейф/.test(norm);
+        const e6 = /мал[а-яё]*популяц[а-яё]*случайн|низк[а-яё]*численност[а-яё]*случайн|дрейф[а-яё]*преобладает[а-яё]*малочисленн|в\s*малочисленных\s*популяциях|случайн[а-яё]*колебан[а-яё]*мал/.test(norm);
+        const e7 = /0[.,]0(?:2[0-9]|3[0-5]|2(?!\d)|3(?!\d))/.test(norm);
+
+        const count = countTrue([e1, e2, e3, e4, e5, e6, e7]);
+
+        if (count >= 6 && e7) return 4;
+        if (count >= 4) return 3;
+        if (count >= 3) return 2;
+        if (count >= 2) return 1;
+        return 0;
+      },
+
+      27: function (raw, norm) {
+        const e1 = /цгааггугацааугу/.test(norm) && /5/.test(norm) && /3/.test(norm);
+        const e2 = /уга/.test(norm) && /уца/.test(norm) && /антикодон|кодон/.test(norm);
+        const e3 = hasSerine(norm);
+
+        const count = countTrue([e1, e2, e3]);
+
+        if (count === 3) return 3;
+        if (count === 2) return 2;
+        if (count === 1) return 1;
+        return 0;
+      },
+
+      28: function (raw, norm) {
+        const compact = String(raw)
+          .replace(/[\s^_{}()]/g, "")
+          .replace(/[Хх]/g, "X")
+          .replace(/ᵃ/g, "a")
+          .replace(/ᴬ/g, "A")
+          .replace(/ᵇ/g, "b")
+          .replace(/ᴮ/g, "B")
+          .replace(/ʸ/g, "Y");
+
+        const hasFirstParents =
+          /XaXa/.test(compact) &&
+          /XaYAb/.test(compact);
+
+        const hasFirstChildren =
+          /XaXa/.test(compact) &&
+          /XAXa|XaXA/.test(compact) &&
+          /XaYAb/.test(compact) &&
+          /XaYab/.test(compact);
+
+        const hasSecondParents =
+          /XAXa|XaXA/.test(compact) &&
+          /XaYa/.test(compact);
+
+        const hasSecondChildren =
+          /XAXa|XaXA/.test(compact) &&
+          /XaXa/.test(compact) &&
+          /XAYa/.test(compact) &&
+          /XaYa/.test(compact);
+
+        const hasSexAndPhenotype =
+          /дочер|сын|мальчик|девочк/.test(norm) &&
+          /нормальн|аномал|перепонч/.test(norm);
+
+        const e1 = hasFirstParents && hasFirstChildren && hasSexAndPhenotype;
+        const e2 = hasSecondParents && hasSecondChildren && hasSexAndPhenotype;
+        const e3 =
+          /XaYab/.test(compact) &&
+          /кроссовер|кроссинговер/.test(norm) &&
+          /сын|мальчик/.test(norm) &&
+          /нормальн/.test(norm) &&
+          /перепонч/.test(norm);
+
+        const count = countTrue([e1, e2, e3]);
+
+        if (count === 3) return 3;
+        if (count === 2) return 2;
+        if (count === 1) return 1;
+        return 0;
+      }
+    };
+
+    function scoreTask(task, raw) {
+      const max = WEIGHTS[task.n] || 1;
+      const text = String(raw || "").trim();
+      if (!text) return 0;
+      const norm = normalizeText(raw);
+      const inputDigits = digitsOnly(raw);
+      switch (task.scoringType) {
+        case "word": return isWordAccepted(task.accepted, raw) ? max : 0;
+        case "strict": return scoreStrict(digitsOnly(task.accepted[0]), inputDigits);
+        case "set": return scoreSet(digitsOnly(task.accepted[0]), inputDigits);
+        case "sequence": return scoreSequence(digitsOnly(task.accepted[0]), inputDigits);
+        case "part2": return PART2_GRADERS[task.n] ? PART2_GRADERS[task.n](raw, norm) : 0;
+        default: return 0;
+      }
+    }
+
+    let savedAnswers = {};
+    let checklistState = {};
+
+    function escapeHtml(str) {
+      return String(str).replace(/[&<>"']/g, function (m) {
+        return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[m];
+      });
+    }
+
+    function scrollToId(id) {
+      const el = document.getElementById(id);
+      if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+
+    function applyUIText() {
+      const L = I18N[currentLang];
+      document.title = L.docTitle;
+      document.documentElement.lang = currentLang;
+      const meta = document.querySelector('meta[name="description"]');
+      if (meta) meta.setAttribute("content", L.metaDesc);
+      document.querySelectorAll("[data-i18n]").forEach(function (el) {
+        const key = el.dataset.i18n;
+        if (L[key] != null) el.innerHTML = L[key];
+      });
+    }
+
+    function renderCards(containerId, cards) {
+      const grid = document.getElementById(containerId);
+      grid.innerHTML = "";
+      cards.forEach(function (c) {
+        const div = document.createElement("div");
+        div.className = "card " + (c.cls || "");
+        let inner = '<span class="tag ' + (c.tagCls || "") + '">' + escapeHtml(c.tag) + "</span>";
+        inner += "<h3>" + escapeHtml(c.title) + "</h3>";
+        if (c.list) {
+          inner += '<ul class="mini-list">' + c.list.map(function (i) { return "<li>" + escapeHtml(i) + "</li>"; }).join("") + "</ul>";
+        } else if (c.text) {
+          inner += "<p>" + escapeHtml(c.text) + "</p>";
+        }
+        div.innerHTML = inner;
+        grid.appendChild(div);
+      });
+    }
+
+    function renderChecklist() {
+      const ul = document.getElementById("checklistUl");
+      const items = CHECKLIST_ITEMS[currentLang];
+      ul.innerHTML = items.map(function (text, index) {
+        const key = "ch" + (index + 1);
+        const checked = checklistState[key] ? "checked" : "";
+        const doneClass = checklistState[key] ? "done" : "";
+        return [
+          '<li class="check-item ' + doneClass + '">',
+            '<input type="checkbox" id="' + key + '" data-key="' + key + '" ' + checked + ' />',
+            '<label for="' + key + '">' + escapeHtml(text) + '</label>',
+          '</li>'
+        ].join("");
+      }).join("");
+    }
+
+    function renderPlan() {
+      const days = PLAN_DAYS[currentLang];
+      document.getElementById("planGrid").innerHTML = days.map(function (text, index) {
+        const day = index + 1;
+        const critical = day === 1 || day === 9 || day === 20 || day === 25;
+        return [
+          '<div class="day ' + (critical ? "critical" : "") + '">',
+            '<b>' + (currentLang === "ru" ? "День " : "Day ") + day + '</b>',
+            escapeHtml(text),
+          '</div>'
+        ].join("");
+      }).join("");
+    }
+
+    function renderQuiz() {
+      const container = document.getElementById("quizContainer");
+      container.innerHTML = "";
+      QUIZ.forEach(function (task) {
+        const block = document.createElement("div");
+        block.className = "question-block";
+        block.id = "q" + task.n;
+        const langData = task[currentLang];
+        const placeholder = task.n >= 22
+          ? (currentLang === "ru" ? "Введите краткий ответ-ориентир" : "Enter a short reference answer")
+          : (currentLang === "ru" ? "Введите ответ" : "Enter answer");
+
+        block.innerHTML = `
+          <div class="q-number">${currentLang === "ru" ? "Задание " : "Task "}${task.n} / ${TOTAL_TASKS}</div>
+          <div style="margin:-8px 0 14px;">
+            <span class="tag ${task.n <= 21 ? "orange" : "green"}">
+              ${escapeHtml(task.n <= 21 ? (currentLang === "ru" ? "Часть 1" : "Part 1") : (currentLang === "ru" ? "Часть 2" : "Part 2"))}
+            </span>
+          </div>
+          <div class="q-part">
+            <span class="q-part-label">${escapeHtml(loc("qLabel1"))}</span>
+            <div class="q-text">${escapeHtml(langData.text)}</div>
+          </div>
+          <div class="q-info">
+            <span class="q-part-label" style="color:#d8ccff;">${escapeHtml(loc("qLabel2"))}</span>
+            <p style="margin:0;">${escapeHtml(langData.info)}</p>
+          </div>
+          <div class="q-part">
+            <span class="q-trainer-label">${escapeHtml(loc("qLabel3"))}</span>
+            <div class="answer-row">
+              <input id="input-${task.n}" class="answer-input" type="text" placeholder="${escapeHtml(placeholder)}" />
+              <button class="btn small" onclick="checkTask(${task.n})">${escapeHtml(loc("checkBtn"))}</button>
+            </div>
+          </div>
+          <div id="result-${task.n}"></div>
+        `;
+        container.appendChild(block);
+      });
+      restoreAnswers();
+      updateStats();
+      updateSummary();
+    }
+
+    function restoreAnswers() {
+      QUIZ.forEach(function (task) {
+        const saved = savedAnswers[task.n];
+        if (!saved) return;
+        const input = document.getElementById("input-" + task.n);
+        if (!input) return;
+        input.disabled = true;
+        input.value = saved.value;
+        input.classList.remove("correct", "wrong", "partial");
+        if (saved.score === saved.max) input.classList.add("correct");
+        else if (saved.score > 0) input.classList.add("partial");
+        else input.classList.add("wrong");
+        showResult(task, saved);
+      });
+    }
+
+    function checkTask(n) {
+      const task = QUIZ.find(function (q) { return q.n === n; });
+      if (!task || savedAnswers[n]) return;
+      const input = document.getElementById("input-" + n);
+      const raw = input.value;
+      if (!String(raw).trim()) { alert(loc("enterAnswer")); return; }
+      const max = WEIGHTS[task.n] || 1;
+      const score = scoreTask(task, raw);
+      const saved = { value: raw, score: score, max: max, correct: score === max };
+      savedAnswers[n] = saved;
+      input.disabled = true;
+      input.value = raw;
+      input.classList.remove("correct", "wrong", "partial");
+      if (score === max) input.classList.add("correct");
+      else if (score > 0) input.classList.add("partial");
+      else input.classList.add("wrong");
+      showResult(task, saved);
+      updateStats();
+      updateSummary();
+    }
+
+    function showResult(task, saved) {
+      const resultBox = document.getElementById("result-" + task.n);
+      if (!resultBox) return;
+      const langData = task[currentLang];
+      const isMax = saved.score === saved.max;
+      const isPartial = saved.score > 0 && !isMax;
+      const verdictClass = isMax ? "correct" : isPartial ? "partial" : "wrong";
+      const verdictText = isMax ? loc("correct") : isPartial ? loc("partial") : loc("wrong");
+
+      let extraNote = "";
+      if (task.n >= 22) {
+        extraNote = `<div class="source-row"><strong>${escapeHtml(loc("part2Approx"))}</strong></div>`;
+      }
+
+      resultBox.innerHTML = `
+        <div class="result-block ${verdictClass}">
+          <div class="verdict ${verdictClass}">${escapeHtml(verdictText)}</div>
+          <div class="result-row"><strong>${escapeHtml(loc("yourAnswer"))}</strong> ${escapeHtml(saved.value)}</div>
+          <div class="result-row"><strong>${escapeHtml(loc("correctAnswer"))}</strong> ${escapeHtml(task.answer)}</div>
+          <div class="result-row"><strong>${escapeHtml(loc("pointsLabel"))}</strong> ${saved.score} / ${saved.max}</div>
+          <div class="result-row"><strong>${escapeHtml(loc("explanationLabel"))}</strong> ${escapeHtml(langData.explanation)}</div>
+          <div class="source-row"><strong>${escapeHtml(loc("sourceLabel"))}</strong> ${escapeHtml(langData.source)}</div>
+          ${extraNote}
+        </div>
+      `;
+    }
+
+    function getStats() {
+      let answered = 0, correct = 0, score = 0, maxScore = 0;
+      QUIZ.forEach(function (task) {
+        const saved = savedAnswers[task.n];
+        const w = WEIGHTS[task.n] || 1;
+        maxScore += w;
+        if (saved) {
+          answered++;
+          score += saved.score || 0;
+          if (saved.correct) correct++;
+        }
+      });
+      return { total: TOTAL_TASKS, answered: answered, correct: correct, score: score, maxScore: maxScore };
+    }
+
+    function getChecklistProgress() {
+      const inputs = document.querySelectorAll("#checklistUl input");
+      const total = inputs.length;
+      let done = 0;
+      inputs.forEach(function (input) { if (input.checked) done++; });
+      return total ? Math.round((done / total) * 100) : 0;
+    }
+
+    function updateStats() {
+      const s = getStats();
+      document.getElementById("answeredCount").textContent = s.answered + "/" + s.total;
+      document.getElementById("correctCount").textContent = s.correct + "/" + s.total;
+      document.getElementById("checklistProgress").textContent = getChecklistProgress() + "%";
+      document.getElementById("overall").value = Math.round(((s.answered / s.total) * 100 + getChecklistProgress()) / 2);
+    }
+
+    function updateSummary() {
+      const s = getStats();
+      const box = document.getElementById("summaryBox");
+      const L = I18N[currentLang];
+      if (s.answered < s.total) {
+        box.innerHTML = `
+          <div class="summary">
+            <p style="color:#9aa4c8;margin:0;">${escapeHtml(L.passedBlocks)} <strong>${s.answered}</strong> ${escapeHtml(L.of)} ${s.total}</p>
+            <p style="color:#9aa4c8;margin:8px 0 0 0;">${escapeHtml(L.correctInPart1)} <strong>${s.correct}</strong> ${escapeHtml(L.of)} ${s.total}</p>
+            <p style="color:#9aa4c8;margin:8px 0 0 0;">${escapeHtml(L.primaryPart1)} <strong>${s.score}</strong> ${escapeHtml(L.of)} ${s.maxScore}</p>
+            <p style="color:#9aa4c8;margin:8px 0 0 0;font-size:14px;">${escapeHtml(L.answerAllBlocks)}</p>
+          </div>
+        `;
+        return;
+      }
+      const percent = s.maxScore ? Math.round((s.score / s.maxScore) * 100) : 0;
+      let verdict = percent >= 85 ? L.verdictExcellent : percent >= 60 ? L.verdictGood : L.verdictNeed;
+      box.innerHTML = `
+        <div class="summary">
+          <div class="score">${s.score}/${s.maxScore}</div>
+          <p style="margin:8px 0;">${escapeHtml(verdict)}</p>
+          <p style="color:#9aa4c8;margin:0;">${escapeHtml(L.correctInPart1)} ${percent}%</p>
+          <p class="note" style="margin-top:10px;">${escapeHtml(L.noteSelfCheck)}</p>
+        </div>
+      `;
+    }
+
+    function resetAll() {
+      if (!confirm(loc("confirmReset"))) return;
+      savedAnswers = {};
+      checklistState = {};
+      renderChecklist();
+      renderPlan();
+      renderQuiz();
+    }
+
+    function copyPhone() {
+      const phone = "89202275676";
+      const status = document.getElementById("copyStatus");
+      const showCopied = function () {
+        status.textContent = loc("copied");
+        setTimeout(function () { status.textContent = ""; }, 2500);
+      };
+      if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(phone).then(showCopied).catch(function () { fallbackCopy(phone, showCopied); });
+      } else {
+        fallbackCopy(phone, showCopied);
+      }
+    }
+
+    function fallbackCopy(text, callback) {
+      const textarea = document.createElement("textarea");
+      textarea.value = text;
+      textarea.style.position = "fixed";
+      textarea.style.opacity = "0";
+      document.body.appendChild(textarea);
+      textarea.focus();
+      textarea.select();
+      try { document.execCommand("copy"); callback(); }
+      catch (e) { alert(loc("copyError") + text); }
+      document.body.removeChild(textarea);
+    }
+
+    let timerTotal = 235 * 60;
+    let timerRemaining = timerTotal;
+    let timerInterval = null;
+    let timerRunning = false;
+
+    function formatTime(sec) {
+      const h = Math.floor(sec / 3600);
+      const m = Math.floor((sec % 3600) / 60);
+      const s = sec % 60;
+      return [h, m, s].map(function (v) { return String(v).padStart(2, "0"); }).join(":");
+    }
+
+    function updateTimerDisplay() {
+      const display = document.getElementById("timerDisplay");
+      const widget = document.getElementById("timerWidget");
+      display.textContent = formatTime(timerRemaining);
+      widget.classList.toggle("warning", timerRemaining <= 300 && timerRemaining > 60);
+      widget.classList.toggle("danger", timerRemaining <= 60);
+    }
+
+    function updateTimerButton() {
+      const btn = document.getElementById("timerToggle");
+      btn.textContent = timerRunning ? "⏸" : "▶";
+    }
+
+    function stopTimer() {
+      timerRunning = false;
+      if (timerInterval) clearInterval(timerInterval);
+      timerInterval = null;
+      updateTimerButton();
+    }
+
+    function startTimer() {
+      if (timerRunning || timerRemaining <= 0) return;
+      timerRunning = true;
+      timerInterval = setInterval(function () {
+        if (timerRemaining > 0) { timerRemaining--; updateTimerDisplay(); }
+        if (timerRemaining === 0) { stopTimer(); alert(loc("timeUp")); }
+      }, 1000);
+      updateTimerButton();
+    }
+
+    function toggleTimer() { if (timerRunning) stopTimer(); else startTimer(); }
+
+    function resetTimer() {
+      stopTimer();
+      timerRemaining = timerTotal;
+      updateTimerDisplay();
+    }
+
+    function updateTimerLabels() {
+      const preset = document.getElementById("timerPreset");
+      const presets = [
+        { seconds: 235 * 60, label: loc("timerExam") },
+        { seconds: 60 * 60, label: loc("timerPractice") },
+        { seconds: 30 * 60, label: loc("timerSprint") }
+      ];
+      preset.innerHTML = presets.map(function (p) {
+        return '<option value="' + p.seconds + '">' + escapeHtml(p.label) + '</option>';
+      }).join("");
+      preset.value = String(235 * 60);
+      timerTotal = 235 * 60;
+      timerRemaining = timerTotal;
+      updateTimerButton();
+      updateTimerDisplay();
+    }
+
+    function setLang(lang) {
+      if (lang === currentLang) return;
+      currentLang = lang;
+      document.querySelectorAll(".lang-option").forEach(function (sp) {
+        sp.classList.toggle("active", sp.dataset.lang === lang);
+      });
+      savedAnswers = {};
+      checklistState = {};
+      applyUIText();
+      renderAll();
+      updateTimerLabels();
+    }
+
+    function renderAll() {
+      renderCards("structureGrid", STRUCTURE_CARDS[currentLang]);
+      renderCards("changesGrid", CHANGES_CARDS[currentLang]);
+      renderCards("criteriaGrid", CRITERIA_CARDS[currentLang]);
+      renderChecklist();
+      renderPlan();
+      renderQuiz();
+    }
+
+    document.addEventListener("DOMContentLoaded", function () {
+      applyUIText();
+      renderAll();
+      updateTimerLabels();
+      updateTimerDisplay();
+
+      document.getElementById("langToggle").addEventListener("click", function () {
+        setLang(currentLang === "ru" ? "en" : "ru");
+      });
+
+      document.getElementById("timerToggle").addEventListener("click", toggleTimer);
+      document.getElementById("timerReset").addEventListener("click", resetTimer);
+
+      document.getElementById("timerPreset").addEventListener("change", function (e) {
+        timerTotal = parseInt(e.target.value, 10);
+        resetTimer();
+      });
+
+      document.getElementById("checklistUl").addEventListener("change", function (e) {
+        if (e.target.matches("input[type='checkbox']")) {
+          const key = e.target.dataset.key;
+          checklistState[key] = e.target.checked;
+          const li = e.target.closest(".check-item");
+          if (li) li.classList.toggle("done", e.target.checked);
+          updateStats();
+        }
+      });
+
+      document.addEventListener("keydown", function (e) {
+        if (e.key !== "Enter") return;
+        const active = document.activeElement;
+        if (!active || !active.classList.contains("answer-input")) return;
+        const match = active.id.match(/^input-(\d+)$/);
+        if (match) checkTask(parseInt(match[1], 10));
+      });
+    });
+  </script>
+</body>
+</html>
